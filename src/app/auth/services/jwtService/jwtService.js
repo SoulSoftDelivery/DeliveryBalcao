@@ -1,7 +1,6 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import handlePassword from '../../../services/handlePassword';
 import jwtServiceConfig from './jwtServiceConfig';
 
 /* eslint-disable camelcase */
@@ -79,6 +78,7 @@ class JwtService extends FuseUtils.EventEmitter {
             var usuario = response.data.conteudo[0];
 
             const dataUserSession = {
+              'usuarioId': usuario.usuarioId,
               'nome': (usuario.nome).substr(0, 20),
               'email': usuario.email,
               'telefone': usuario.telefone,

@@ -40,8 +40,8 @@ function AboutTab({ user }) {
               </div>
 
               <div className="mb-24">
-                <Typography className="font-semibold mb-4 text-15">Tipo de Acesso</Typography>
-                <Typography>{user.role[0]}</Typography>
+                <Typography className="font-semibold mb-4 text-15">Telefone</Typography>
+                <Typography>{user.telefone}</Typography>
               </div>
 
               {/* <div className="mb-24">

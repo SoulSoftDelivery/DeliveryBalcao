@@ -10,6 +10,8 @@ import ExampleConfig from '../main/example/ExampleConfig';
 import HomeConfig from '../main/home/HomeConfig';
 import ForgotPasswordConfig from '../main/forgot-password/ForgotPasswordConfig';
 import ResetPasswordConfig from '../main/reset-password/ResetPasswordConfig';
+import ProfileConfig from '../main/profile/ProfileConfig';
+import EditPasswordConfig from '../main/edit-password/EditPasswordConfig';
 
 const routeConfigs = [
   ExampleConfig,
@@ -19,6 +21,8 @@ const routeConfigs = [
   ForgotPasswordConfig,
   ResetPasswordConfig,
   HomeConfig,
+  ProfileConfig,
+  EditPasswordConfig,
 ];
 
 const routes = [

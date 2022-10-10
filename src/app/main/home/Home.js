@@ -19,9 +19,10 @@ function Home(props) {
     <>
       <div className="h-full flex justify-center items-center">
         <div>
-          <img src="assets/images/logo/logo-sem-fundo.png" alt="logo" />
+          <img className="h-64" src="assets/images/logo/logo2-sem-fundo.png" alt="logo" />
         </div>
       </div>
+
     </>
   );
 }
