@@ -95,7 +95,7 @@ class JwtService extends FuseUtils.EventEmitter {
           } else {
             errorReturn.push({
               type: 'generalErrors',
-              message: 'Não foi possível concluir a solicitação.',
+              message: response.data.msg ? response.data.msg : 'Não foi possível concluir a solicitação.',
             });
 
             reject(errorReturn);

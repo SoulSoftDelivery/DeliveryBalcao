@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { selectUser } from 'app/store/userSlice';
-import handlePassword from '../../services/handlePassword';
 import ContentHeader from '../../utilities/layout/contentHeader';
 import GeneralAlert from '../../utilities/generalAlert';
 import Form from './form';
