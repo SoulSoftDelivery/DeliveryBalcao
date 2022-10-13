@@ -46,9 +46,9 @@ function ForgotPassword() {
     // Inicia o loading
     setLoadingConfirmar(true);
 
-    // Acessando Api para recuperação de Senha
+    // Acessando Api para redefinição de Senha
     axios
-      .post('Autenticador/RecuperarSenha', data)
+      .get('Autenticador/EnviarLinkRedefinicaoSenha/' + data.email)
       .then((response) => {
         setAlert({
           'type': 'success',

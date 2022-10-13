@@ -21,14 +21,13 @@ const schema = yup.object().shape({
     .required('Digite a Senha.')
     .min(4, 'Senha inválida - Mínimo de 4 caracteres.'),
   lembrarLogin: yup
-    .bool(),
+    .boolean(),
 });
 
 const defaultValues = {
   email: '',
   senha: '',
   lembrarLogin: false,
-  generalErrors: '',
 };
 
 function SignInPage() {

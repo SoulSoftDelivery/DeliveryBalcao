@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { selectUser } from 'app/store/userSlice';
-import handlePassword from '../../services/handlePassword';
 import ContentHeader from '../../utilities/layout/contentHeader';
 import GeneralAlert from '../../utilities/generalAlert';
 import Form from './form';
@@ -65,52 +64,35 @@ function EditPassword() {
 
   async function onSubmit(data) {
     setLoadingConfirmar(true);
-    // Acessando Api para criptografia da Nova Senha
-    await handlePassword
-      .handleEncripty(data.senhaAtual, true)
-      .then((senha) => {
-        // Verifica se a senha atual que foi digitada está correta
-        if (senha === user.senha) {
-          // Acessa a Api de Criptografa novamente para preparara nova senha para salvar
-          handlePassword
-            .handleEncripty(data.novaSenha, true)
-            .then((novaSenha) => {
-              const dataEditSenha = {
-                'PartitionKey': user.partitionKey,
-                'Email': user.email,
-                'Senha': data.senhaAtual,
-                'NovaSenha': novaSenha,
-              };
 
-              axios
-                .post('Cliente/AlterarSenhaClienteLogado', dataEditSenha)
-                .then((response) => {
-                  setAlert({
-                    'type': 'success',
-                    'message': 'Senha Alterada com sucesso.',
-                  });
+    const dataEditPassword = {
+      "usuarioId": user.usuarioId,
+      "senhaAtual": data.senhaAtual,
+      "novaSenha": data.novaSenha,
+    }
 
-                  reset();
-                })
-                .catch((error) => {
-                  setAlert({
-                    'type': 'error',
-                    'message': 'Não foi possível concluir a Solicitação.',
-                  });
-                  console.log(error);
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+    axios
+      .post('Usuario/EditPassword', dataEditPassword)
+      .then((response) => {
+        if(response.data.ok){
+          setAlert({
+            'type': 'success',
+            'message': 'Senha Alterada com sucesso.',
+          });          
         } else {
           setAlert({
             'type': 'error',
-            'message': 'Senha Atual Inválida.',
-          });
+            'message': response.data.msg ? response.data.msg : 'Senha Alterada com sucesso.',
+          }); 
         }
+
+        reset();
       })
       .catch((error) => {
+        setAlert({
+          'type': 'error',
+          'message': 'Não foi possível concluir a Solicitação.',
+        });
         console.log(error);
       });
 

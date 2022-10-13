@@ -55,9 +55,9 @@ function ResetPassword() {
 
   useEffect(() => {
     const data = {
-      'token': decodeURI(searchParams.get('ref')),
+      'token': decodeURI(searchParams.get('token')),
       'email': searchParams.get('email'),
-      'partitionKey': searchParams.get('pKey'),
+      'id': searchParams.get('id'),
     };
 
     axios
