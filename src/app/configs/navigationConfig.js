@@ -17,12 +17,12 @@ const navigationConfig = [
     url: 'home',
   },
   {
-    id: 'contatos',
-    title: 'Contatos',
-    translate: 'Contatos',
+    id: 'clientes',
+    title: 'Clientes',
+    translate: 'Clientes',
     type: 'item',
     icon: 'group',
-    url: 'contacts',
+    url: 'apps/e-commerce/products',
   },
   {
     id: 'mensageria',

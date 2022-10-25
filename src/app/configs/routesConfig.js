@@ -12,6 +12,7 @@ import ForgotPasswordConfig from '../main/forgot-password/ForgotPasswordConfig';
 import ResetPasswordConfig from '../main/reset-password/ResetPasswordConfig';
 import ProfileConfig from '../main/profile/ProfileConfig';
 import EditPasswordConfig from '../main/edit-password/EditPasswordConfig';
+import ECommerceAppConfig from '../main/e-commerce/ECommerceAppConfig';
 
 const routeConfigs = [
   ExampleConfig,
@@ -23,6 +24,7 @@ const routeConfigs = [
   HomeConfig,
   ProfileConfig,
   EditPasswordConfig,
+  ECommerceAppConfig,
 ];
 
 const routes = [

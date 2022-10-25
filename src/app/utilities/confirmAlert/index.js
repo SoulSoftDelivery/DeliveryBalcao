@@ -40,7 +40,7 @@ export default function AlertDialogSlide({
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Após a confirmação as alterações realizadas não poderão ser desfeitas. <br />
-            <b>A solicitação pode demorar alguns minutos.</b>
+            {/* <b>A solicitação pode demorar alguns minutos.</b> */}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

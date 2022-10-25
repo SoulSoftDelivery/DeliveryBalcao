@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 
-function GeneralAlert({ type, message, setAlert }) {
+function GeneralAlert({ type, message, setAlert, custom }) {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ function GeneralAlert({ type, message, setAlert }) {
         'type': 'error',
         'message': '',
       });
-    }, 10000);
+    }, 2000);
 
     return () => {
       clearTimeout(timeId);
@@ -25,7 +25,8 @@ function GeneralAlert({ type, message, setAlert }) {
   }
 
   return (
-    <Stack sx={{ width: '100%' }} spacing={2} className="mb-16">
+    // <Stack sx={{ width: '100%' }} spacing={2} className="mb-16">
+    <Stack sx={{ width: '100%' }} spacing={2} className={custom !== undefined ? custom : 'mb-16'}>
       <Alert severity={type}>{message}</Alert>
     </Stack>
   );
