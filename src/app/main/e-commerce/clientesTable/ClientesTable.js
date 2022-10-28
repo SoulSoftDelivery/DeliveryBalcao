@@ -4,12 +4,10 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import FuseLoading from '@fuse/core/FuseLoading';
-import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
-import ProductsTableHead from './ProductsTableHead';
+import ClientesTableHead from './ClientesTableHead';
 import ClientesRowTable from './ClientesRowTable';
 
 function ClientesTable({
@@ -37,7 +35,7 @@ function ClientesTable({
     <div className="w-full flex flex-col min-h-full">
       <FuseScrollbars className="grow overflow-x-auto">
         <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <ProductsTableHead
+          <ClientesTableHead
           // selectedProductIds={selected}
           // order={order}
           // onSelectAllClick={handleSelectAllClick}

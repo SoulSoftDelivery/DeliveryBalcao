@@ -22,7 +22,7 @@ const navigationConfig = [
     translate: 'Clientes',
     type: 'item',
     icon: 'group',
-    url: 'apps/e-commerce/products',
+    url: 'clientes',
   },
   {
     id: 'mensageria',

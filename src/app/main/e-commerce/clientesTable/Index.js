@@ -4,12 +4,12 @@ import { selectUser } from 'app/store/userSlice';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import axios from 'axios';
-import ProductsHeader from './ProductsHeader';
+import ClientesHeader from './ClientesHeader';
 import ClientesTable from './ClientesTable';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
 // import GeneralAlert from '../../../utilities/generalAlert';
 
-function Products() {
+function Clientes() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const [searchText, setSearchText] = useState('');
@@ -135,7 +135,7 @@ function Products() {
 
   return (
     <FusePageCarded
-      header={<ProductsHeader searchText={searchText} setSearchText={setSearchText} />}
+      header={<ClientesHeader searchText={searchText} setSearchText={setSearchText} />}
       content={
         <>
           {/* Alert para mensagem geral */}
@@ -176,4 +176,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Clientes;
