@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 import _ from '@lodash';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,79 +24,98 @@ import InventoryTab from './tabs/InventoryTab';
 import PricingTab from './tabs/PricingTab';
 import ProductImagesTab from './tabs/ProductImagesTab';
 import ShippingTab from './tabs/ShippingTab';
+import Form from './form';
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-  name: yup
+  nome: yup
     .string()
-    .required('You must enter a product name')
-    .min(5, 'The product name must be at least 5 characters'),
+    .required('Digite o nome'),
+  telefone: yup
+    .string()
+    .required('Digite o número de telefone'),
+  email: yup
+    .string(),
+  sexo: yup
+    .string(),
+  rua: yup
+    .string()
+    .required('Digite a rua'),
+  quadra: yup
+    .string(),
+  lote: yup
+    .string(),
+  numero: yup
+    .string(),
+  bairro: yup
+    .string()
+    .required('Digite o bairro'),
 });
 
-function Product(props) {
-  const dispatch = useDispatch();
+const defaultValues = {
+  nome: '',
+  telefone: '',
+  email: '',
+  sexo: '',
+  rua: '',
+  quadra: '',
+  lote: '',
+  numero: '',
+  bairro: '',
+};
+
+function Cliente(props) {
   const product = useSelector(selectProduct);
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
   const routeParams = useParams();
   const [tabValue, setTabValue] = useState(0);
   const [noProduct, setNoProduct] = useState(false);
+
+  // Busca o Cliente
+  const getCliente = async (clienteId) => {
+    const data = {
+      params: {
+        'clienteId': clienteId,
+      },
+    };
+
+    axios
+      .get('Cliente/Create', data)
+      .then((response) => {
+        // setValue('rowKey', response.data.RowKey, { shouldValidate: true });
+        // setValue('contatoNome', response.data.ContatoNome, { shouldValidate: true });
+        // setValue('contatoWhatsappNum', response.data.ContatoWhatsappNum, { shouldValidate: true });
+        // setValue('contatoEmail', response.data.ContatoEmail, { shouldValidate: true });
+        // setValue('contatoCpfCnpj', response.data.ContatoCpfCnpj, { shouldValidate: true });
+        // setValue('contatoEndereco', response.data.ContatoEndereco, { shouldValidate: true });
+        // setValue('contatoSexo', response.data.ContatoSexo, { shouldValidate: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (routeParams.id !== "new") {
+      getCliente(routeParams.id);
+    } else {
+      reset();
+    }
+
+    // setValue('partitionKey', user.partitionKey, { shouldValidate: true });
+  }, [routeParams]);
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {},
     resolver: yupResolver(schema),
   });
+
   const { reset, watch, control, onChange, formState } = methods;
   const form = watch();
-
-  useDeepCompareEffect(() => {
-    function updateProductState() {
-      const { productId } = routeParams;
-
-      if (productId === 'new') {
-        /**
-         * Create New Product data
-         */
-        dispatch(newProduct());
-      } else {
-        /**
-         * Get Product data
-         */
-        dispatch(getProduct(productId)).then((action) => {
-          /**
-           * If the requested product is not exist show message
-           */
-          if (!action.payload) {
-            setNoProduct(true);
-          }
-        });
-      }
-    }
-
-    updateProductState();
-  }, [dispatch, routeParams]);
-
-  useEffect(() => {
-    if (!product) {
-      return;
-    }
-    /**
-     * Reset the form on product state changes
-     */
-    reset(product);
-  }, [product, reset]);
-
-  useEffect(() => {
-    return () => {
-      /**
-       * Reset Product on component unload
-       */
-      dispatch(resetProduct());
-      setNoProduct(false);
-    };
-  }, [dispatch]);
 
   /**
    * Tab Change
@@ -141,53 +161,51 @@ function Product(props) {
   }
 
   return (
-    <FormProvider {...methods}>
-      <FusePageCarded
-        header={<ProductHeader />}
-        content={
-          <>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="secondary"
-              textColor="secondary"
-              variant="scrollable"
-              scrollButtons="auto"
-              classes={{ root: 'w-full h-64 border-b-1' }}
-            >
-              <Tab className="h-64" label="Basic Info" />
-              <Tab className="h-64" label="Product Images" />
-              <Tab className="h-64" label="Pricing" />
-              <Tab className="h-64" label="Inventory" />
-              <Tab className="h-64" label="Shipping" />
-            </Tabs>
-            <div className="p-16 sm:p-24 max-w-3xl">
-              <div className={tabValue !== 0 ? 'hidden' : ''}>
-                <BasicInfoTab />
-              </div>
-
-              <div className={tabValue !== 1 ? 'hidden' : ''}>
-                <ProductImagesTab />
-              </div>
-
-              <div className={tabValue !== 2 ? 'hidden' : ''}>
-                <PricingTab />
-              </div>
-
-              <div className={tabValue !== 3 ? 'hidden' : ''}>
-                <InventoryTab />
-              </div>
-
-              <div className={tabValue !== 4 ? 'hidden' : ''}>
-                <ShippingTab />
-              </div>
+    <FusePageCarded
+      header={<ProductHeader />}
+      content={
+        <>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            indicatorColor="secondary"
+            textColor="secondary"
+            variant="scrollable"
+            scrollButtons="auto"
+            classes={{ root: 'w-full h-64 border-b-1' }}
+          >
+            <Tab className="h-64" label="Basic Info" />
+            <Tab className="h-64" label="Product Images" />
+            <Tab className="h-64" label="Pricing" />
+            <Tab className="h-64" label="Inventory" />
+            <Tab className="h-64" label="Shipping" />
+          </Tabs>
+          <div className="p-16 sm:p-24 max-w-3xl">
+            <div className={tabValue !== 0 ? 'hidden' : ''}>
+              <BasicInfoTab />
             </div>
-          </>
-        }
-        scroll={isMobile ? 'normal' : 'content'}
-      />
-    </FormProvider>
+
+            <div className={tabValue !== 1 ? 'hidden' : ''}>
+              <ProductImagesTab />
+            </div>
+
+            <div className={tabValue !== 2 ? 'hidden' : ''}>
+              <PricingTab />
+            </div>
+
+            <div className={tabValue !== 3 ? 'hidden' : ''}>
+              <InventoryTab />
+            </div>
+
+            <div className={tabValue !== 4 ? 'hidden' : ''}>
+              <ShippingTab />
+            </div>
+          </div>
+        </>
+      }
+      scroll={isMobile ? 'normal' : 'content'}
+    />
   );
 }
 
-export default withReducer('eCommerceApp', reducer)(Product);
+export default Cliente;

@@ -7,7 +7,7 @@ import axios from 'axios';
 import ProductsHeader from './ProductsHeader';
 import ClientesTable from './ClientesTable';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
-import GeneralAlert from '../../../utilities/generalAlert';
+// import GeneralAlert from '../../../utilities/generalAlert';
 
 function Products() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -24,10 +24,10 @@ function Products() {
     'id': '',
     'loading': false,
   });
-  const [alert, setAlert] = useState({
-    'type': 'error',
-    'message': '',
-  });
+  // const [alert, setAlert] = useState({
+  //   'type': 'error',
+  //   'message': '',
+  // });
 
   const user = useSelector(selectUser);
 
@@ -96,24 +96,30 @@ function Products() {
       .delete('Cliente/Delete/' + clienteIdClick)
       .then((response) => {
         if (response.data.msg) {
-          setAlert({
-            'type': 'warning',
-            'message': response.data.msg,
-          });
+          // setAlert({
+          //   'type': 'warning',
+          //   'message': response.data.msg,
+          // });
+
+          alert(response.data.msg);
         } else {
-          setAlert({
-            'type': 'success',
-            'message': 'Cliente excluido com sucesso.',
-          });
+          // setAlert({
+          //   'type': 'success',
+          //   'message': 'Cliente excluido com sucesso.',
+          // });
+
+          alert('Cliente excluido com sucesso.');
         }
 
         getClientes();
       })
       .catch((error) => {
-        setAlert({
-          'type': 'error',
-          'message': 'Não foi possível concluir a solicitação.',
-        });
+        // setAlert({
+        //   'type': 'error',
+        //   'message': 'Não foi possível concluir a solicitação.',
+        // });
+
+        alert('Não foi possível concluir a solicitação.');
         console.log(error);
       });
 
@@ -133,14 +139,14 @@ function Products() {
       content={
         <>
           {/* Alert para mensagem geral */}
-          {alert.message && (
+          {/* {alert.message && (
             <GeneralAlert
               custom="my-4 mx-4"
               type={alert.type}
               message={alert.message}
               setAlert={setAlert}
             />
-          )}
+          )} */}
 
           <ClientesTable
             clienteList={clienteList}

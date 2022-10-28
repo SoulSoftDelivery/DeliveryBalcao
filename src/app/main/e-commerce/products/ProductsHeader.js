@@ -53,7 +53,7 @@ function ProductsHeader({
             component={Link}
             to="/apps/e-commerce/products/new"
             variant="contained"
-            color="secondary"
+            color="primary"
             startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
           >
             Adicionar
