@@ -51,7 +51,7 @@ function ProductsHeader({
           <Button
             className=""
             component={Link}
-            to="/apps/e-commerce/products/new"
+            to="/cliente/new"
             variant="contained"
             color="primary"
             startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}

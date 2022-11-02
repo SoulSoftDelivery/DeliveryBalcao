@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from 'app/store/userSlice';
+import { showMessage } from 'app/store/fuse/messageSlice';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import axios from 'axios';
 import ClientesHeader from './ClientesHeader';
 import ClientesTable from './ClientesTable';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
-// import GeneralAlert from '../../../utilities/generalAlert';
 
 function Clientes() {
   const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -24,12 +24,10 @@ function Clientes() {
     'id': '',
     'loading': false,
   });
-  // const [alert, setAlert] = useState({
-  //   'type': 'error',
-  //   'message': '',
-  // });
 
   const user = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   // Função consulta lista de contatos
   const getClientes = async () => {
@@ -96,19 +94,29 @@ function Clientes() {
       .delete('Cliente/Delete/' + clienteIdClick)
       .then((response) => {
         if (response.data.msg) {
-          // setAlert({
-          //   'type': 'warning',
-          //   'message': response.data.msg,
-          // });
-
-          alert(response.data.msg);
+          dispatch(
+            showMessage({
+              message: response.data.msg,
+              autoHideDuration: 6000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+              },
+              variant: 'success',
+            })
+          );
         } else {
-          // setAlert({
-          //   'type': 'success',
-          //   'message': 'Cliente excluido com sucesso.',
-          // });
-
-          alert('Cliente excluido com sucesso.');
+          dispatch(
+            showMessage({
+              message: 'Registro excluido com sucesso.',
+              autoHideDuration: 6000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+              },
+              variant: 'success',
+            })
+          );
         }
 
         getClientes();
@@ -138,16 +146,7 @@ function Clientes() {
       header={<ClientesHeader searchText={searchText} setSearchText={setSearchText} />}
       content={
         <>
-          {/* Alert para mensagem geral */}
-          {/* {alert.message && (
-            <GeneralAlert
-              custom="my-4 mx-4"
-              type={alert.type}
-              message={alert.message}
-              setAlert={setAlert}
-            />
-          )} */}
-
+          {/* Tabela */}
           <ClientesTable
             clienteList={clienteList}
             buttonLoading={buttonLoading}

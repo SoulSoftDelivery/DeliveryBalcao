@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-const Cliente = lazy(() => import('./product/Product'));
+const Cliente = lazy(() => import('./product/Index'));
 const Clientes = lazy(() => import('./clientesTable/Index'));
 
 const ECommerceAppConfig = {
