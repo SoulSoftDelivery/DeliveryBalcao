@@ -70,7 +70,7 @@ function ClienteHeader({
               {getValues('nome') || 'Novo Cliente'}
             </Typography>
             <Typography variant="caption" className="font-medium">
-              Detalhes
+              Formulário
             </Typography>
           </motion.div>
         </div>

@@ -1,8 +1,8 @@
 import FuseLoading from '@fuse/core/FuseLoading';
+import { styled } from '@mui/material/styles';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import withReducer from 'app/store/withReducer';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +15,14 @@ import * as yup from 'yup';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import ClienteHeader from './ClienteHeader';
 import Form from './form';
+
+const Root = styled(FusePageCarded)({
+  '& .FusePageCarded-header': {},
+  '& .FusePageCarded-toolbar': {},
+  '& .FusePageCarded-content': {},
+  '& .FusePageCarded-sidebarHeader': {},
+  '& .FusePageCarded-sidebarContent': {},
+});
 
 /**
  * Form Validation Schema
@@ -151,7 +159,7 @@ function Cliente(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FusePageCarded
+      <Root
         header={
           <ClienteHeader
             loadingSalvar={loadingSalvar}
@@ -161,15 +169,12 @@ function Cliente(props) {
           />
         }
         content={
-          <>
+          <div className="flex-auto p-24 sm:p-40 h-full">
             {/* Formulária da página */}
-            <Form
-              control={control}
-              errors={errors}
-            />
-          </>
+            <Form control={control} errors={errors} />
+          </div>
         }
-        scroll={isMobile ? 'normal' : 'content'}
+        scroll="page"
       />
     </form>
   );
