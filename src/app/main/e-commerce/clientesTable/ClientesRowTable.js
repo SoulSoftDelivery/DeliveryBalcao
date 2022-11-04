@@ -35,7 +35,7 @@ const ClientesRowTable = ({
       // aria-checked={isSelected}
       tabIndex={-1}
       // selected={isSelected}
-      // onClick={(event) => handleClick(n)}
+      onClick={(event) => handleEditar(cliente.id)}
     >
       <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
         {cliente.id}
@@ -83,62 +83,13 @@ const ClientesRowTable = ({
           className="mx-2"
           variant="contained"
           size="small"
-          loading={loadingExcluir}
+          loading={loadingEditar}
           onClick={() => handleEditar(cliente.id)}
         >
           Editar
         </LoadingButton>
       </TableCell>
     </TableRow>
-    // <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-    //   <TableCell component="th" scope="row">
-    //     {cliente.enviado === true && (<Icon>check</Icon>)}
-    //   </TableCell>
-    //   <TableCell component="th" scope="row">
-    //     {cliente.dataCadastroBR}
-    //   </TableCell>
-    //   <TableCell>{cliente.totalRegistro}</TableCell>
-    //   <TableCell>{cliente.totalSucesso == null ? "--" : cliente.totalSucesso}</TableCell>
-    //   <TableCell>{cliente.totalFalha == null ? "--" : cliente.totalFalha}</TableCell>
-    //   <TableCell>
-    //     <Stack spacing={2} direction="row">
-    //       <LoadingButton
-    //         variant="contained"
-    //         size="small"
-    //         color="error"
-    //         loading={loadingExcluir}
-    //         onClick={() => handleExcluir(cliente.bloco)}
-    //       >
-    //         Excluir
-    //       </LoadingButton>
-    //       <LoadingButton
-    //         variant="contained"
-    //         size="small"
-    //         loading={loadingDisparar}
-    //         onClick={() => handleDisparar(cliente.bloco)}
-    //       >
-    //         Disparar
-    //       </LoadingButton>
-    //       <LoadingButton
-    //         variant="contained"
-    //         size="small"
-    //         color="success"
-    //         loading={loadingExportar}
-    //         onClick={() => handleExportar(cliente.bloco)}
-    //       >
-    //         Exportar
-    //       </LoadingButton>
-    //       <LoadingButton
-    //         variant="contained"
-    //         size="small"
-    //         loading={loadingNovoBlocoFalhas}
-    //         onClick={() => handleNovoBlocoFalhas(cliente.bloco)}
-    //       >
-    //         Novo bloco falhas
-    //       </LoadingButton>
-    //     </Stack>
-    //   </TableCell>
-    // </TableRow>
   );
 };
 

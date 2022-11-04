@@ -5,6 +5,7 @@ import { showMessage } from 'app/store/fuse/messageSlice';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import ClientesHeader from './ClientesHeader';
 import ClientesTable from './ClientesTable';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
@@ -26,7 +27,7 @@ function Clientes() {
   });
 
   const user = useSelector(selectUser);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Função consulta lista de contatos
@@ -71,8 +72,8 @@ function Clientes() {
     setRowsPerPage(event.target.value);
   }
 
-  function handleEditar() {
-    console.log("teste editar");
+  function handleEditar(clienteId) {
+    navigate('/cliente/' + clienteId);
   }
 
   // Abre a caixa de confirmação de Exclusão
@@ -122,12 +123,17 @@ function Clientes() {
         getClientes();
       })
       .catch((error) => {
-        // setAlert({
-        //   'type': 'error',
-        //   'message': 'Não foi possível concluir a solicitação.',
-        // });
-
-        alert('Não foi possível concluir a solicitação.');
+        dispatch(
+          showMessage({
+            message: 'Não foi possível concluir a solicitação.',
+            autoHideDuration: 6000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          })
+        );
         console.log(error);
       });
 

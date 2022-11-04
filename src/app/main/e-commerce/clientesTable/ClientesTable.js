@@ -10,7 +10,8 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import ClientesTableHead from './ClientesTableHead';
 import ClientesRowTable from './ClientesRowTable';
 
-function ClientesTable({
+function 
+ClientesTable({
   clienteList,
   buttonLoading,
   handleExcluir,

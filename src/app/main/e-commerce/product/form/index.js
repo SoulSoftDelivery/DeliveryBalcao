@@ -122,6 +122,19 @@ const index = ({
             />
           </div>
         </div>
+        <div className="grid grid-col">
+          <div>
+            <InputText
+              label="Complemento"
+              name="complemento"
+              disabled={false}
+              iconInput="location_on"
+              control={control}
+              error={!!errors.complemento}
+              helperText={errors?.complemento?.message}
+            />
+          </div>
+        </div>
       </div>
     </>
   );
