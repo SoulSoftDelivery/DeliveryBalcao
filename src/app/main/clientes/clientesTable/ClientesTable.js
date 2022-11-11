@@ -4,9 +4,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import FuseLoading from '@fuse/core/FuseLoading';
 import ClientesTableHead from './ClientesTableHead';
 import ClientesRowTable from './ClientesRowTable';
 

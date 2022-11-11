@@ -2,7 +2,7 @@ import react, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';

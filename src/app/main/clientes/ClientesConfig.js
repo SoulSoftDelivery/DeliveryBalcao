@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 
-const Cliente = lazy(() => import('./product/Cliente'));
+const Cliente = lazy(() => import('./clienteDetails/Cliente'));
 const Clientes = lazy(() => import('./clientesTable/Clientes'));
 
-const ECommerceAppConfig = {
+const ClientesConfig = {
   settings: {
     layout: {},
   },
@@ -19,4 +19,4 @@ const ECommerceAppConfig = {
   ],
 };
 
-export default ECommerceAppConfig;
+export default ClientesConfig;

@@ -1,4 +1,3 @@
-import React from 'react';
 import InputText from '../../../../utilities/inputs/inputText';
 import InputSelectSexo from '../../../../utilities/inputs/inputSelectSexo';
 import InputCheckbox from '../../../../utilities/inputs/inputCheckbox';
