@@ -10,6 +10,7 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { selectUser } from 'app/store/userSlice';
 import ClienteHeader from './ClienteHeader';
+import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
 import Form from './form';
 
 const Root = styled(FusePageCarded)({
@@ -57,26 +58,36 @@ const schema = yup.object().shape({
   complemento: yup
     .string()
     .nullable(),
+  ativo: yup
+    .bool(),
 });
 
 const defaultValues = {
-  clienteId: 0,
-  enderecoId: 0,
   empresaId: 0,
+  clienteId: 0,
   nome: '',
   telefone: '',
   email: '',
   sexo: '',
+  clienteSituacao: 0,
+  enderecoId: 0,
+  uf: '',
+  cidade: '',
+  cep: '',
   rua: '',
   quadra: '',
   lote: '',
   numero: '',
   bairro: '',
   complemento: '',
+  ativo: false,
 };
 
 function Cliente() {
   const [loadingSalvar, setLoadingSalvar] = useState(false);
+  const [loadingExcluir, setLoadingExcluir] = useState(false);
+  const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const user = useSelector(selectUser);
   const routeParams = useParams();
@@ -102,17 +113,24 @@ function Cliente() {
       .get('Cliente/Get/' + clienteId)
       .then((response) => {
         setValue('clienteId', response.data.conteudo[0].clienteId, { shouldValidate: true });
-        setValue('enderecoId', response.data.conteudo[0].enderecoId, { shouldValidate: true });
         setValue('nome', response.data.conteudo[0].nome, { shouldValidate: true });
         setValue('telefone', response.data.conteudo[0].telefone, { shouldValidate: true });
         setValue('email', response.data.conteudo[0].email, { shouldValidate: true });
-        // setValue('sexo', response.data.conteudo[0].sexo, { shouldValidate: true });
+        setValue('sexo', response.data.conteudo[0].sexo, { shouldValidate: true });
+        setValue('clienteSituacao', response.data.conteudo[0].clienteSituacao, { shouldValidate: true });
+        setValue('enderecoId', response.data.conteudo[0].enderecoId, { shouldValidate: true });
+        setValue('uf', response.data.conteudo[0].cidade, { shouldValidate: true });
+        setValue('cep', response.data.conteudo[0].cep, { shouldValidate: true });
+        setValue('cidade', response.data.conteudo[0].cidade, { shouldValidate: true });
         setValue('rua', response.data.conteudo[0].rua, { shouldValidate: true });
         setValue('quadra', response.data.conteudo[0].quadra, { shouldValidate: true });
         setValue('lote', response.data.conteudo[0].lote, { shouldValidate: true });
         setValue('numero', response.data.conteudo[0].numero, { shouldValidate: true });
         setValue('bairro', response.data.conteudo[0].bairro, { shouldValidate: true });
         setValue('complemento', response.data.conteudo[0].complemento, { shouldValidate: true });
+        setValue('ativo', response.data.conteudo[0].ativo, { shouldValidate: true });
+
+        setChecked(response.data.conteudo[0].ativo);
       })
       .catch((error) => {
         console.log(error);
@@ -125,7 +143,68 @@ function Cliente() {
     }
 
     setValue('empresaId', user.empresaId, { shouldValidate: true });
+    setValue('cidade', user.cidade, { shouldValidate: true });
+    setValue('uf', user.uf, { shouldValidate: true });
   }, [routeParams]);
+
+  // Abre a caixa de confirmação de Exclusão
+  function openConfirmExcluir() {
+    setShowConfirmExcluir(true);
+  }
+
+  function handleExcluir() {
+    // Inicia o load
+    setLoadingExcluir(true);
+
+    axios
+      .delete('Cliente/Delete/' + getValues('clienteId'))
+      .then((response) => {
+        if (response.data.msg) {
+          dispatch(
+            showMessage({
+              message: response.data.msg,
+              autoHideDuration: 6000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+              },
+              variant: 'success',
+            })
+          );
+        } else {
+          dispatch(
+            showMessage({
+              message: 'Registro excluido com sucesso.',
+              autoHideDuration: 6000,
+              anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+              },
+              variant: 'success',
+            })
+          );
+        }
+
+        resetForm();
+      })
+      .catch((error) => {
+        dispatch(
+          showMessage({
+            message: 'Não foi possível concluir a solicitação.',
+            autoHideDuration: 6000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          })
+        );
+        console.log(error);
+      });
+
+    // Finaliza o load
+    setLoadingExcluir(false);
+  }
 
   async function onSubmit(data) {
     setLoadingSalvar(true);
@@ -155,7 +234,7 @@ function Cliente() {
                 vertical: 'top',
                 horizontal: 'center',
               },
-              variant: 'success',
+              variant: 'error',
             })
           );
           console.log(error);
@@ -185,7 +264,7 @@ function Cliente() {
                 vertical: 'top',
                 horizontal: 'center',
               },
-              variant: 'success',
+              variant: 'error',
             })
           );
           console.log(error);
@@ -204,7 +283,9 @@ function Cliente() {
       <Root
         header={
           <ClienteHeader
-            loadingSalvar={loadingSalvar}
+            handleExcluir={openConfirmExcluir}
+            loadingLogin={loadingSalvar}
+            loadingExcluir={loadingExcluir}
             getValues={getValues}
             dirtyFields={dirtyFields}
             isValid={isValid}
@@ -212,10 +293,25 @@ function Cliente() {
           />
         }
         content={
-          <div className="flex-auto p-24 sm:p-40">
-            {/* Formulária da página */}
-            <Form control={control} errors={errors} />
-          </div>
+          <>
+            <div className="flex-auto p-24 sm:p-40">
+              {/* Formulária da página */}
+              <Form
+                control={control}
+                errors={errors}
+                checked={checked}
+                setChecked={setChecked}
+              />
+            </div>
+
+            {/* ConfirmAlert Excluir */}
+            <ConfirmAlertExcluir
+              open={showConfirmExcluir}
+              setOpen={setShowConfirmExcluir}
+              message="Excluir o cadastro atual?"
+              returnFunction={handleExcluir}
+            />
+          </>
         }
         scroll="page"
       />

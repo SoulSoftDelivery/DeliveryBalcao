@@ -83,7 +83,7 @@ function Clientes() {
     setClienteIdClick(clienteId);
   }
 
-  function handleExcluir() {
+  async function handleExcluir() {
     // Inicia o load
     setButtonLoading({
       'button': 'Excluir',
@@ -91,14 +91,14 @@ function Clientes() {
       'loading': true,
     });
 
-    axios
+    await axios
       .delete('Cliente/Delete/' + clienteIdClick)
       .then((response) => {
         if (response.data.msg) {
           dispatch(
             showMessage({
               message: response.data.msg,
-              autoHideDuration: 6000,
+              autoHideDuration: 5000,
               anchorOrigin: {
                 vertical: 'top',
                 horizontal: 'center',
@@ -110,7 +110,7 @@ function Clientes() {
           dispatch(
             showMessage({
               message: 'Registro excluido com sucesso.',
-              autoHideDuration: 6000,
+              autoHideDuration: 5000,
               anchorOrigin: {
                 vertical: 'top',
                 horizontal: 'center',
@@ -126,7 +126,7 @@ function Clientes() {
         dispatch(
           showMessage({
             message: 'Não foi possível concluir a solicitação.',
-            autoHideDuration: 6000,
+            autoHideDuration: 5000,
             anchorOrigin: {
               vertical: 'top',
               horizontal: 'center',
@@ -156,8 +156,6 @@ function Clientes() {
           <ClientesTable
             clienteList={clienteList}
             buttonLoading={buttonLoading}
-            showConfirmExcluir={showConfirmExcluir}
-            setShowConfirmExcluir={setShowConfirmExcluir}
             handleExcluir={openConfirmExcluir}
             handleEditar={handleEditar}
             page={page}

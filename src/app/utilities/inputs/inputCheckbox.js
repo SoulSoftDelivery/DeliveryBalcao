@@ -3,7 +3,13 @@ import { Controller } from 'react-hook-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-function InputCheckbox({ label, name, control, checked, setChecked }) {
+function InputCheckbox({
+  label,
+  name,
+  control,
+  checked,
+  setChecked,
+}) {
   return (
     <Controller
       name={name}

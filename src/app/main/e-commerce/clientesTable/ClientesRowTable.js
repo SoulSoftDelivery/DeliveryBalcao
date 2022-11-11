@@ -35,30 +35,30 @@ const ClientesRowTable = ({
       // aria-checked={isSelected}
       tabIndex={-1}
       // selected={isSelected}
-      onClick={(event) => handleEditar(cliente.id)}
+      // onClick={() => handleEditar(cliente.id)}
     >
-      <TableCell className="p-4 md:p-16" align="center" component="th" scope="row">
+      <TableCell className="p-4 md:p-16" align="center" component="th" scope="row" onClick={() => handleEditar(cliente.id)}>
         {cliente.id}
       </TableCell>
 
-      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row">
+      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(cliente.id)}>
         {cliente.nome}
       </TableCell>
 
-      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row">
+      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(cliente.id)}>
         {cliente.telefone}
       </TableCell>
 
-      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row">
+      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(cliente.id)}>
         {cliente.email}
       </TableCell>
 
-      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row">
+      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(cliente.id)}>
         {(new Date(cliente.dtCadastro)).toLocaleString("pt-BR")}
       </TableCell>
 
-      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row">
-        {cliente.situacao === "A" ? (
+      <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(cliente.id)}>
+        {cliente.ativo ? (
           <FuseSvgIcon className="text-green" size={20}>
             heroicons-outline:check-circle
           </FuseSvgIcon>

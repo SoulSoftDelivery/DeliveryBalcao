@@ -10,7 +10,9 @@ import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 
 function ClienteHeader({
-  loadingLogin,
+  handleExcluir,
+  loadingSalvar,
+  loadingExcluir,
   getValues,
   dirtyFields,
   isValid,
@@ -20,12 +22,6 @@ function ClienteHeader({
   const methods = useFormContext();
   const theme = useTheme();
   const navigate = useNavigate();
-
-  function handleRemoveProduct() {
-    // dispatch(removeProduct()).then(() => {
-    //   navigate('/apps/e-commerce/products');
-    // });
-  }
 
   return (
     <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-32 px-24 md:px-32">
@@ -85,8 +81,8 @@ function ClienteHeader({
           className="w-full mt-16 mr-8"
           variant="contained"
           color="error"
-          loading={false}
-          onClick={reset}
+          loading={loadingExcluir}
+          onClick={() => handleExcluir()}
           disabled={!getValues('clienteId')}
         >
           Excluir
@@ -95,9 +91,9 @@ function ClienteHeader({
           type="submit"
           variant="contained"
           color="primary"
-          loading={loadingLogin}
+          loading={loadingSalvar}
           className="w-full mt-16"
-          aria-label="Entrar"
+          aria-label="Salvar"
           disabled={_.isEmpty(dirtyFields) || !isValid}
           value="legacy"
         >

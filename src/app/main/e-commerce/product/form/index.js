@@ -1,10 +1,13 @@
 import React from 'react';
 import InputText from '../../../../utilities/inputs/inputText';
 import InputSelectSexo from '../../../../utilities/inputs/inputSelectSexo';
+import InputCheckbox from '../../../../utilities/inputs/inputCheckbox';
 
 const index = ({
   control,
   errors,
+  checked,
+  setChecked,
 }) => {
   return (
     <>
@@ -132,6 +135,17 @@ const index = ({
               control={control}
               error={!!errors.complemento}
               helperText={errors?.complemento?.message}
+            />
+          </div>
+        </div>
+        <div className="grid grid-col">
+          <div>
+            <InputCheckbox
+              label="Cadastro Ativo?"
+              name="ativo"
+              control={control}
+              checked={checked}
+              setChecked={setChecked}
             />
           </div>
         </div>
