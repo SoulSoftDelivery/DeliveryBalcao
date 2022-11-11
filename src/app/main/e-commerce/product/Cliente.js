@@ -87,7 +87,7 @@ function Cliente() {
   const [loadingSalvar, setLoadingSalvar] = useState(false);
   const [loadingExcluir, setLoadingExcluir] = useState(false);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const user = useSelector(selectUser);
   const routeParams = useParams();
@@ -186,6 +186,7 @@ function Cliente() {
         }
 
         resetForm();
+        setChecked(false);
       })
       .catch((error) => {
         dispatch(
