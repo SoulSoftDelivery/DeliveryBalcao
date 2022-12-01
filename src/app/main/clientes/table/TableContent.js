@@ -1,13 +1,14 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import Paper from '@mui/material/Paper';
+import TableContainer from '@mui/material/TableContainer';
 import _ from '@lodash';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
-import ClientesTableHead from './ClientesTableHead';
-import ClientesRowTable from './ClientesRowTable';
+import TableHead from './TableHead';
+import RowTable from './RowTable';
 
-function ClientesTable({
+function TableContent({
   clienteList,
   buttonLoading,
   handleExcluir,
@@ -22,29 +23,21 @@ function ClientesTable({
     return (
       <div className="flex flex-1 items-center justify-center h-full">
         <Typography color="text.secondary" variant="h5">
-          Nenhum cliente encontrado
+          Nenhum registro encontrado
         </Typography>
       </div>
     );
   }
 
   return (
-    <div className="w-full flex flex-col min-h-full">
-      <FuseScrollbars className="grow overflow-x-auto">
-        <Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-          <ClientesTableHead
-          // selectedProductIds={selected}
-          // order={order}
-          // onSelectAllClick={handleSelectAllClick}
-          // onRequestSort={handleRequestSort}
-          // rowCount={data.length}
-          // onMenuItemClick={handleDeselect}
-          />
-
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead />
           <TableBody>
             {clienteList.map((cliente) => {
               return (
-                <ClientesRowTable
+                <RowTable
                   key={cliente.id}
                   cliente={cliente}
                   handleExcluir={handleExcluir}
@@ -55,25 +48,18 @@ function ClientesTable({
             })}
           </TableBody>
         </Table>
-      </FuseScrollbars>
-
+      </TableContainer>
       <TablePagination
-        className="shrink-0 border-t-1"
+        rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={totalRows}
         rowsPerPage={rowsPerPage}
         page={page}
-        backIconButtonProps={{
-          'aria-label': 'Previous Page',
-        }}
-        nextIconButtonProps={{
-          'aria-label': 'Next Page',
-        }}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div>
+    </Paper>
   );
 }
 
-export default ClientesTable;
+export default TableContent;

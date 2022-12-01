@@ -4,7 +4,7 @@ import TableCell from '@mui/material/TableCell';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-const ClientesRowTable = ({
+const RowTable = ({
   cliente,
   handleExcluir,
   handleEditar,
@@ -91,4 +91,4 @@ const ClientesRowTable = ({
   );
 };
 
-export default ClientesRowTable;
+export default RowTable;

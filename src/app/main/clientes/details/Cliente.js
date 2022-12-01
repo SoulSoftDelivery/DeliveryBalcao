@@ -9,7 +9,7 @@ import axios from 'axios';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { selectUser } from 'app/store/userSlice';
-import ClienteHeader from './ClienteHeader';
+import FormHeader from './FormHeader';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
 import Form from './form';
 
@@ -102,15 +102,9 @@ function Cliente() {
   const { isValid, errors, dirtyFields } = formState;
 
   // Busca o Cliente
-  const getCliente = async (clienteId) => {
-    const data = {
-      params: {
-        'clienteId': clienteId,
-      },
-    };
-
+  const getClientes = async (clienteId) => {
     axios
-      .get('Cliente/Get/' + clienteId)
+      .get('Cliente/' + clienteId)
       .then((response) => {
         setValue('clienteId', response.data.conteudo[0].clienteId, { shouldValidate: true });
         setValue('nome', response.data.conteudo[0].nome, { shouldValidate: true });
@@ -139,12 +133,10 @@ function Cliente() {
 
   useEffect(() => {
     if (routeParams.clienteId !== "new") {
-      getCliente(routeParams.clienteId);
+      getClientes(routeParams.clienteId);
     }
 
     setValue('empresaId', user.empresaId, { shouldValidate: true });
-    setValue('cidade', user.cidade, { shouldValidate: true });
-    setValue('uf', user.uf, { shouldValidate: true });
   }, [routeParams]);
 
   // Abre a caixa de confirmação de Exclusão
@@ -157,7 +149,7 @@ function Cliente() {
     setLoadingExcluir(true);
 
     axios
-      .delete('Cliente/Delete/' + getValues('clienteId'))
+      .delete('Cliente/' + getValues('clienteId'))
       .then((response) => {
         if (response.data.msg) {
           dispatch(
@@ -212,7 +204,7 @@ function Cliente() {
 
     if (data.clienteId) {
       await axios
-        .patch('Cliente/Update', data)
+        .patch('Cliente', data)
         .then((response) => {
           dispatch(
             showMessage({
@@ -242,7 +234,7 @@ function Cliente() {
         });
     } else {
       await axios
-        .post('Cliente/Create', data)
+        .post('Cliente', data)
         .then((response) => {
           dispatch(
             showMessage({
@@ -283,7 +275,7 @@ function Cliente() {
     <form onSubmit={handleSubmit(onSubmit)} className="h-full">
       <Root
         header={
-          <ClienteHeader
+          <FormHeader
             handleExcluir={openConfirmExcluir}
             loadingLogin={loadingSalvar}
             loadingExcluir={loadingExcluir}

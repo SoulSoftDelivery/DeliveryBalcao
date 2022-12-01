@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from 'app/store/userSlice';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import useThemeMediaQuery from '@fuse/hooks/useThemeMediaQuery';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import ClientesHeader from './ClientesHeader';
-import ClientesTable from './ClientesTable';
+import TableContent from './TableContent';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
+import PageHeader from '../../../utilities/layout/pageHeader';
+import Filters from './Filters';
+
+const Root = styled(FusePageCarded)({
+  '& .FusePageCarded-header': {},
+  '& .FusePageCarded-toolbar': {},
+  '& .FusePageCarded-content': {},
+  '& .FusePageCarded-sidebarHeader': {},
+  '& .FusePageCarded-sidebarContent': {},
+});
 
 function Clientes() {
-  const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
-
-  const [searchText, setSearchText] = useState('');
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -26,23 +32,26 @@ function Clientes() {
     'loading': false,
   });
 
+  // Filter
+  const [nomeFilter, setNomeFilter] = useState('');
+  const [situacaoFilter, setSituacaoFilter] = useState('');
+
   const user = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Função consulta lista de contatos
   const getClientes = async () => {
     const data = {
       params: {
         'empresaId': user.empresaId,
-        'searchText': searchText.trim(),
-        'Page': page,
-        'PageSize': rowsPerPage,
+        'nome': nomeFilter.trim(),
+        'page': page,
+        'pageSize': rowsPerPage,
       },
     };
 
     axios
-      .get('Cliente/List', data)
+      .get('Cliente/', data)
       .then((response) => {
         setClienteList(response.data.conteudo[0].results[0]);
         setTotalRows(response.data.conteudo[0].totalRows);
@@ -53,18 +62,17 @@ function Clientes() {
       });
   };
 
-  // Lista os Clientes no carregamento da página
+  // Busca as listas após a renderização da página
   useEffect(() => {
     getClientes();
   }, []);
 
-  // Lista os Clientes quando a paginação é alterada
+  // Atualiza a lista de Clientes quando uma paginação ou filtro é alterado
   useEffect(() => {
     getClientes();
-  }, [searchText, rowsPerPage, page]);
+  }, [nomeFilter, situacaoFilter, rowsPerPage, page]);
 
   function handleChangePage(event, value) {
-    console.log(value);
     setPage(value);
   }
 
@@ -92,7 +100,7 @@ function Clientes() {
     });
 
     await axios
-      .delete('Cliente/Delete/' + clienteIdClick)
+      .delete('Cliente/' + clienteIdClick)
       .then((response) => {
         if (response.data.msg) {
           dispatch(
@@ -147,13 +155,25 @@ function Clientes() {
     setClienteIdClick(0);
   }
 
+  function resetFilters() {
+    setNomeFilter('');
+  }
+
   return (
-    <FusePageCarded
-      header={<ClientesHeader searchText={searchText} setSearchText={setSearchText} />}
+    <Root
+      header={<PageHeader title="Controle de Clientes" buttonUrl="/Cliente/new" />}
       content={
-        <>
+        <div className="flex-auto p-24 sm:p-40">
+          {/* Filtros */}
+          <Filters
+            nomeFilter={nomeFilter}
+            setNomeFilter={setNomeFilter}
+            situacaoFilter={situacaoFilter}
+            setSituacaoFilter={setSituacaoFilter}
+            resetFilters={resetFilters}
+          />
           {/* Tabela */}
-          <ClientesTable
+          <TableContent
             clienteList={clienteList}
             buttonLoading={buttonLoading}
             handleExcluir={openConfirmExcluir}
@@ -164,17 +184,16 @@ function Clientes() {
             handleChangePage={handleChangePage}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
           />
-
           {/* ConfirmAlert Excluir */}
           <ConfirmAlertExcluir
             open={showConfirmExcluir}
             setOpen={setShowConfirmExcluir}
-            message="Excluir o cliente selecionado?"
+            message="Excluir o item selecionado?"
             returnFunction={handleExcluir}
           />
-        </>
+        </div>
       }
-      scroll={isMobile ? 'normal' : 'content'}
+      scroll="page"
     />
   );
 }

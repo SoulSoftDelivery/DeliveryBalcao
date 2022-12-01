@@ -2,25 +2,19 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { motion } from 'framer-motion';
-import { useFormContext } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import _ from '@lodash';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 
-function ClienteHeader({
+function FormHeader({
   handleExcluir,
   loadingSalvar,
   loadingExcluir,
   getValues,
   dirtyFields,
   isValid,
-  reset,
 }) {
-  const dispatch = useDispatch();
-  const methods = useFormContext();
   const theme = useTheme();
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-32 px-24 md:px-32">
@@ -33,7 +27,7 @@ function ClienteHeader({
             className="flex items-center sm:mb-12"
             component={Link}
             role="button"
-            to="/clientes"
+            to="/produtos"
             color="inherit"
           >
             <FuseSvgIcon size={20}>
@@ -41,7 +35,7 @@ function ClienteHeader({
                 ? 'heroicons-outline:arrow-sm-left'
                 : 'heroicons-outline:arrow-sm-right'}
             </FuseSvgIcon>
-            <span className="flex mx-4 font-medium">Clientes</span>
+            <span className="flex mx-4 font-medium">Produtos</span>
           </Typography>
         </motion.div>
 
@@ -53,7 +47,7 @@ function ClienteHeader({
           >
             <img
               className="w-32 sm:w-48 rounded"
-              src="assets/images/avatars/profile.jpg"
+              src="assets/images/apps/ecommerce/product-image-placeholder.png"
               alt="profile"
             />
           </motion.div>
@@ -63,7 +57,7 @@ function ClienteHeader({
             animate={{ x: 0, transition: { delay: 0.3 } }}
           >
             <Typography className="text-16 sm:text-20 truncate font-semibold">
-              {getValues('nome') || 'Novo Cliente'}
+              {getValues('nome') || 'Novo Produto'}
             </Typography>
             <Typography variant="caption" className="font-medium">
               Formulário
@@ -82,7 +76,7 @@ function ClienteHeader({
           color="error"
           loading={loadingExcluir}
           onClick={() => handleExcluir()}
-          disabled={!getValues('clienteId')}
+          disabled={!getValues('id')}
         >
           Excluir
         </LoadingButton>
@@ -103,4 +97,4 @@ function ClienteHeader({
   );
 }
 
-export default ClienteHeader;
+export default FormHeader;

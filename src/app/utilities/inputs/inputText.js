@@ -18,16 +18,16 @@ function InputText({ label, name, disabled, control, error, helperText, iconInpu
           label={label}
           error={error}
           helperText={helperText}
-          InputProps={{
-            type: 'text',
-            endAdornment: (
-              <InputAdornment position="end">
-                <Icon className="text-20" color="action">
-                  {iconInput}
-                </Icon>
-              </InputAdornment>
-            ),
-          }}
+          // InputProps={{
+          //   type: 'text',
+          //   endAdornment: (
+          //     <InputAdornment position="end">
+          //       <Icon className="text-20" color="action">
+          //         {iconInput}
+          //       </Icon>
+          //     </InputAdornment>
+          //   ),
+          // }}
           variant="outlined"
         />
       )}

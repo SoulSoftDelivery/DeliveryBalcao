@@ -13,6 +13,7 @@ import ResetPasswordConfig from '../main/reset-password/ResetPasswordConfig';
 import ProfileConfig from '../main/profile/ProfileConfig';
 import EditPasswordConfig from '../main/edit-password/EditPasswordConfig';
 import ClientesConfig from '../main/clientes/ClientesConfig';
+import ProdutosConfig from '../main/produtos/ProdutosConfig';
 
 const routeConfigs = [
   ExampleConfig,
@@ -25,6 +26,7 @@ const routeConfigs = [
   ProfileConfig,
   EditPasswordConfig,
   ClientesConfig,
+  ProdutosConfig,
 ];
 
 const routes = [
