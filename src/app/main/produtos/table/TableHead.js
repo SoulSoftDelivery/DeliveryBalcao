@@ -22,7 +22,7 @@ const rows = [
     id: 'quantidade',
     align: 'left',
     disablePadding: false,
-    label: 'Qtd.',
+    label: 'Qtd',
     sort: false,
   },
   {

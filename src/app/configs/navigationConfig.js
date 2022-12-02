@@ -17,12 +17,12 @@ const navigationConfig = [
     url: 'home',
   },
   {
-    id: 'controlePedidos',
-    title: 'Controle de Pedidos',
-    translate: 'Controle de Pedidos',
+    id: 'painelpedidos',
+    title: 'Painel Pedidos',
+    translate: 'Pedidos',
     type: 'item',
     icon: 'point_of_sale',
-    url: 'controle-pedidos',
+    url: 'painel-pedidos',
   },
   {
     id: 'cadastros',
@@ -42,21 +42,6 @@ const navigationConfig = [
         title: 'Produtos',
         type: 'item',
         url: 'produtos',
-      },
-    ],
-  },
-  {
-    id: 'configuracoes',
-    title: 'Configurações',
-    translate: 'Configurações',
-    type: 'collapse',
-    icon: 'settings',
-    children: [
-      {
-        id: 'configuracoesEmail',
-        title: 'E-mail',
-        type: 'item',
-        url: 'configuracoes/email',
       },
     ],
   },

@@ -45,6 +45,7 @@ function Clientes() {
       params: {
         'empresaId': user.empresaId,
         'nome': nomeFilter.trim(),
+        'situacao': situacaoFilter === '' ? 0 : situacaoFilter,
         'page': page,
         'pageSize': rowsPerPage,
       },
@@ -157,6 +158,7 @@ function Clientes() {
 
   function resetFilters() {
     setNomeFilter('');
+    setSituacaoFilter('');
   }
 
   return (
