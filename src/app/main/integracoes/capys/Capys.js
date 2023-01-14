@@ -277,7 +277,7 @@ function Capys() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

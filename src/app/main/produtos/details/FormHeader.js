@@ -87,7 +87,7 @@ function FormHeader({
           loading={loadingSalvar}
           className="w-full mt-16"
           aria-label="Salvar"
-          disabled={_.isEmpty(dirtyFields) || !isValid}
+          disabled={!isValid}
           value="legacy"
         >
           Salvar

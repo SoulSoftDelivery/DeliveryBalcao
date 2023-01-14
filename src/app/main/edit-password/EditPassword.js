@@ -142,7 +142,7 @@ function EditPassword() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

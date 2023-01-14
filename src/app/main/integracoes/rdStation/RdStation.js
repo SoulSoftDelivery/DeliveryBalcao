@@ -162,7 +162,7 @@ function RdStation() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

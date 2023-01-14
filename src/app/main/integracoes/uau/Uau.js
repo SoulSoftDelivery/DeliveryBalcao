@@ -247,7 +247,7 @@ function Uau() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

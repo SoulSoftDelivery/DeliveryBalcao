@@ -233,7 +233,7 @@ function Produtos() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

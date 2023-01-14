@@ -294,6 +294,7 @@ function Cliente() {
                 errors={errors}
                 checked={checked}
                 setChecked={setChecked}
+                setValue={setValue}
               />
             </div>
 
@@ -306,7 +307,7 @@ function Cliente() {
             />
           </>
         }
-        scroll="page"
+        scroll="normal"
       />
     </form>
   );

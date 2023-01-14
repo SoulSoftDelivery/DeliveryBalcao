@@ -244,7 +244,7 @@ function Sienge() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

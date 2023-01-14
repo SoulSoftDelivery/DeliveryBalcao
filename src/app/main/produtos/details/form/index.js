@@ -1,4 +1,7 @@
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 import InputText from '../../../../utilities/inputs/inputText';
+// import InputCurrency from '../../../../utilities/inputs/inputCurrency';
 import InputSelect from '../../../../utilities/inputs/inputSelect';
 import InputCheckbox from '../../../../utilities/inputs/inputCheckbox';
 
@@ -9,6 +12,9 @@ const index = ({
   errors,
   checked,
   setChecked,
+  setValue,
+  valor,
+  handleValor,
 }) => {
   return (
     <>
@@ -19,7 +25,6 @@ const index = ({
               label="Nome"
               name="nome"
               disabled={false}
-              iconInput="abc"
               control={control}
               error={!!errors.nome}
               helperText={errors?.nome?.message}
@@ -27,14 +32,15 @@ const index = ({
           </div>
 
           <div>
-            <InputText
+            <TextField
+              className="mb-16 w-full"
               label="Preço"
-              name="valor"
-              disabled={false}
-              iconInput="attach_money"
-              control={control}
-              error={!!errors.valor}
-              helperText={errors?.valor?.message}
+              value={valor}
+              onChange={(e) => handleValor(e.target.value)}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+              }}
+              variant="outlined"
             />
           </div>
 
@@ -43,7 +49,6 @@ const index = ({
               label="Quantidade"
               name="qtd"
               disabled={false}
-              iconInput="123"
               control={control}
               error={!!errors.qtd}
               helperText={errors?.qtd?.message}
@@ -80,7 +85,6 @@ const index = ({
               label="Descricao"
               name="descricao"
               disabled={false}
-              iconInput="location_on"
               control={control}
               error={!!errors.descricao}
               helperText={errors?.descricao?.message}

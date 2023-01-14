@@ -6,11 +6,13 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import numeral from 'numeral';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { selectUser } from 'app/store/userSlice';
 import FormHeader from './FormHeader';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
+import { currencyMask } from '../../../utilities/mask/currency';
 import Form from './form';
 
 const Root = styled(FusePageCarded)({
@@ -35,8 +37,8 @@ const schema = yup.object().shape({
     .nullable(),
   valor: yup
     .string()
-    .nullable()
-    .required('Digite o valor'),
+    // .required('Digite o valor')
+    .nullable(),
   ativo: yup
     .bool(),
   categoriaProdutoId: yup
@@ -57,8 +59,8 @@ const defaultValues = {
   nome: '',
   descricao: '',
   qtd: '',
-  valor: '',
-  ativo: false,
+  valor: '0',
+  ativo: true,
 };
 
 function Produto() {
@@ -68,6 +70,7 @@ function Produto() {
   const [checked, setChecked] = useState(true);
   const [categoriaProdutoList, setCategoriaProdutoList] = useState([]);
   const [tipoMedidaList, setTipoMedidaList] = useState([]);
+  const [valor, setValor] = useState('');
 
   const user = useSelector(selectUser);
   const routeParams = useParams();
@@ -106,7 +109,7 @@ function Produto() {
   };
 
   // Busca o Produto
-  const getProdutos = async (produtoId) => {
+  const getProduto = async (produtoId) => {
     axios
       .get('Produto/' + produtoId)
       .then((response) => {
@@ -119,6 +122,14 @@ function Produto() {
         setValue('categoriaProdutoId', response.data.conteudo[0].categoriaProdutoId, { shouldValidate: true });
         setValue('ativo', response.data.conteudo[0].ativo, { shouldValidate: true });
 
+        let newValor = String(response.data.conteudo[0].valor);
+
+        if (newValor !== '0') {
+          // Ajusta casas decimais para padrão 2
+          newValor = numeral(newValor).format('0.00');
+          handleValor(newValor);
+        }
+
         setChecked(response.data.conteudo[0].ativo);
       })
       .catch((error) => {
@@ -128,7 +139,7 @@ function Produto() {
 
   useEffect(() => {
     if (routeParams.produtoId !== "new") {
-      getProdutos(routeParams.produtoId);
+      getProduto(routeParams.produtoId);
     }
 
     setValue('empresaId', user.empresaId, { shouldValidate: true });
@@ -136,6 +147,16 @@ function Produto() {
     getCategoriasProdutos();
     getTiposMedidas();
   }, [routeParams]);
+
+  function handleValor(data) {
+    // Insere mascara monetária padrão pt-BR
+    data = currencyMask(data);
+    setValor(data);
+    // // Altera para o padrão float
+    data = data.replace(".", "");
+    data = data.replace(",", ".");
+    setValue('valor', data, { shouldValidate: true });
+  }
 
   // Abre a caixa de confirmação de Exclusão
   function openConfirmExcluir() {
@@ -198,7 +219,12 @@ function Produto() {
   }
 
   async function onSubmit(data) {
+    // console.log(data);
     setLoadingSalvar(true);
+
+    if (data.valor === '') {
+      data.valor = '0';
+    }
 
     if (data.id) {
       await axios
@@ -294,6 +320,9 @@ function Produto() {
                 errors={errors}
                 checked={checked}
                 setChecked={setChecked}
+                setValue={setValue}
+                valor={valor}
+                handleValor={handleValor}
               />
             </div>
 
@@ -306,7 +335,7 @@ function Produto() {
             />
           </>
         }
-        scroll="page"
+        scroll="normal"
       />
     </form>
   );

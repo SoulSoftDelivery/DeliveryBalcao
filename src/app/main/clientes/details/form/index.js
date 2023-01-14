@@ -1,4 +1,5 @@
 import InputText from '../../../../utilities/inputs/inputText';
+import InputPhone from '../../../../utilities/inputs/inputPhone';
 import InputSelectSexo from '../../../../utilities/inputs/inputSelectSexo';
 import InputCheckbox from '../../../../utilities/inputs/inputCheckbox';
 
@@ -7,6 +8,7 @@ const index = ({
   errors,
   checked,
   setChecked,
+  setValue,
 }) => {
   return (
     <>
@@ -25,12 +27,12 @@ const index = ({
           </div>
 
           <div>
-            <InputText
+            <InputPhone
               label="Número Telefone"
               name="telefone"
               disabled={false}
-              iconInput="call"
               control={control}
+              iconInput="call"
               error={!!errors.telefone}
               helperText={errors?.telefone?.message}
             />

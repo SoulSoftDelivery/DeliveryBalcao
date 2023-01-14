@@ -297,7 +297,7 @@ function Polichat() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

@@ -195,7 +195,7 @@ function Clientes() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

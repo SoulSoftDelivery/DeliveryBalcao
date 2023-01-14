@@ -8,7 +8,7 @@ const rows = [
     id: 'codigo',
     align: 'center',
     disablePadding: false,
-    label: 'Código',
+    label: '#',
     sort: false,
   },
   {
@@ -43,7 +43,7 @@ const rows = [
     id: 'tpmedica',
     align: 'left',
     disablePadding: false,
-    label: 'Tipo Medida',
+    label: 'Tipo',
     sort: false,
   },
   {

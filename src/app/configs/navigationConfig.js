@@ -29,7 +29,7 @@ const navigationConfig = [
     title: 'Cadastros',
     translate: 'Cadastros',
     type: 'collapse',
-    icon: 'format_list_bulleted',
+    icon: 'add',
     children: [
       {
         id: 'cadastroCliente',

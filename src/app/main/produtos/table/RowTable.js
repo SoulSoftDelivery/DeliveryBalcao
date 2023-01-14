@@ -3,6 +3,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import LoadingButton from '@mui/lab/LoadingButton';
+import numeral from 'numeral';
 
 const RowTable = ({
   produto,
@@ -48,7 +49,7 @@ const RowTable = ({
       </TableCell>
 
       <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(produto.id)}>
-        {produto.valor}
+        {numeral(produto.valor).format('0.00')}
       </TableCell>
 
       <TableCell className="p-4 md:p-16" align="left" component="th" scope="row" onClick={() => handleEditar(produto.id)}>

@@ -8,7 +8,7 @@ const rows = [
     id: 'codigo',
     align: 'center',
     disablePadding: false,
-    label: 'Código',
+    label: '#',
     sort: false,
   },
   {

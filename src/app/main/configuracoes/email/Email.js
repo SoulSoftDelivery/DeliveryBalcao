@@ -215,7 +215,7 @@ function Email() {
           />
         </div>
       }
-      scroll="page"
+      scroll="normal"
     />
   );
 }

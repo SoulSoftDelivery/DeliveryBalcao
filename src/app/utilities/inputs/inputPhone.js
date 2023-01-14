@@ -1,10 +1,30 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import PropTypes from 'prop-types';
+import { IMaskInput } from 'react-imask';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Icon from '@mui/material/Icon';
 
-function InputText({ label, name, disabled, control, error, helperText, iconInput }) {
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="(00) 0000-0000"
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+function InputPhone({ label, name, disabled, control, error, helperText, iconInput }) {
   return (
     <Controller
       name={name}
@@ -27,6 +47,7 @@ function InputText({ label, name, disabled, control, error, helperText, iconInpu
                 </Icon>
               </InputAdornment>
             ),
+            inputComponent: TextMaskCustom,
           }}
           variant="outlined"
         />
@@ -35,4 +56,4 @@ function InputText({ label, name, disabled, control, error, helperText, iconInpu
   );
 }
 
-export default InputText;
+export default InputPhone;
