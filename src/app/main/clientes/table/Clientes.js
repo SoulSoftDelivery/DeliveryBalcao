@@ -81,6 +81,10 @@ function Clientes() {
     setRowsPerPage(event.target.value);
   }
 
+  function handleNomeFilter(data) {
+    setNomeFilter(data);
+  }
+
   function handleEditar(clienteId) {
     navigate('/cliente/' + clienteId);
   }
@@ -169,7 +173,7 @@ function Clientes() {
           {/* Filtros */}
           <Filters
             nomeFilter={nomeFilter}
-            setNomeFilter={setNomeFilter}
+            handleNomeFilter={handleNomeFilter}
             situacaoFilter={situacaoFilter}
             setSituacaoFilter={setSituacaoFilter}
             resetFilters={resetFilters}

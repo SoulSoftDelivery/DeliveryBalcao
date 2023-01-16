@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
+import useDebounce from 'src/app/utilities/debounce/useDebounce';
 
 const Filters = ({
   nomeFilter,
-  setNomeFilter,
+  handleNomeFilter,
   situacaoFilter,
   setSituacaoFilter,
   resetFilters,
 }) => {
+  const [displayValue, setDisplayValue] = useState(nomeFilter);
+  const debouncedChange = useDebounce(handleNomeFilter, 500);
+
+  function handleChange(event) {
+    setDisplayValue(event.target.value);
+    debouncedChange(event.target.value);
+  }
+
   return (
     <div className="mb-32">
       <div className="grid grid-col md:grid-cols-3 md:gap-3">
@@ -19,8 +28,8 @@ const Filters = ({
             id="nomeFilter"
             label="Nome"
             variant="outlined"
-            value={nomeFilter}
-            onChange={(e) => setNomeFilter(e.target.value)}
+            value={displayValue}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-6">

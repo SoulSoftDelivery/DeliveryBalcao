@@ -111,6 +111,10 @@ function Produtos() {
     setRowsPerPage(event.target.value);
   }
 
+  function handleNomeFilter(data) {
+    setNomeFilter(data);
+  }
+
   function handleEditar(produtoId) {
     navigate('/produto/' + produtoId);
   }
@@ -203,7 +207,7 @@ function Produtos() {
             categoriaProdutoList={categoriaProdutoList}
             tipoMedidaList={tipoMedidaList}
             nomeFilter={nomeFilter}
-            setNomeFilter={setNomeFilter}
+            handleNomeFilter={handleNomeFilter}
             categoriaIdFilter={categoriaIdFilter}
             setCategoriaIdFilter={setCategoriaIdFilter}
             tipoMedidaIdFilter={tipoMedidaIdFilter}
