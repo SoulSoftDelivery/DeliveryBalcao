@@ -167,7 +167,7 @@ function Clientes() {
 
   return (
     <Root
-      header={<PageHeader title="Controle de Clientes" buttonUrl="/Cliente/new" />}
+      header={<PageHeader title="Clientes" buttonUrl="/Cliente/new" />}
       content={
         <div className="flex-auto p-24 sm:p-40">
           {/* Filtros */}

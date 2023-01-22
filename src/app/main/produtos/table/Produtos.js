@@ -199,7 +199,7 @@ function Produtos() {
 
   return (
     <Root
-      header={<PageHeader title="Controle de Produtos" buttonUrl="/produto/new" />}
+      header={<PageHeader title="Produtos" buttonUrl="/produto/new" />}
       content={
         <div className="flex-auto p-24 sm:p-40">
           {/* Filtros */}

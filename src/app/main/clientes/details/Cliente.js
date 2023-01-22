@@ -277,12 +277,11 @@ function Cliente() {
         header={
           <FormHeader
             handleExcluir={openConfirmExcluir}
-            loadingLogin={loadingSalvar}
+            loadingSalvar={loadingSalvar}
             loadingExcluir={loadingExcluir}
             getValues={getValues}
             dirtyFields={dirtyFields}
             isValid={isValid}
-            reset={resetForm}
           />
         }
         content={

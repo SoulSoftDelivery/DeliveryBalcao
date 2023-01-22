@@ -4,6 +4,7 @@ import InputText from '../../../../utilities/inputs/inputText';
 // import InputCurrency from '../../../../utilities/inputs/inputCurrency';
 import InputSelect from '../../../../utilities/inputs/inputSelect';
 import InputCheckbox from '../../../../utilities/inputs/inputCheckbox';
+import UploadDropzone from '../uploadDropzone';
 
 const index = ({
   categoriaProdutoList,
@@ -12,9 +13,10 @@ const index = ({
   errors,
   checked,
   setChecked,
-  setValue,
   valor,
   handleValor,
+  getValues,
+  setUploadFile,
 }) => {
   return (
     <>
@@ -88,6 +90,14 @@ const index = ({
               control={control}
               error={!!errors.descricao}
               helperText={errors?.descricao?.message}
+            />
+          </div>
+        </div>
+        <div className="grid grid-col">
+          <div>
+            <UploadDropzone
+              setUploadFile={setUploadFile}
+              // imgCapaUrl={getValues('imgCapaUrl') || 'assets/images/products/product-image-placeholder.png'}
             />
           </div>
         </div>

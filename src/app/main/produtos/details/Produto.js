@@ -39,6 +39,9 @@ const schema = yup.object().shape({
     .string()
     // .required('Digite o valor')
     .nullable(),
+  imgCapaUrl: yup
+    .string()
+    .nullable(),
   ativo: yup
     .bool(),
   categoriaProdutoId: yup
@@ -59,7 +62,8 @@ const defaultValues = {
   nome: '',
   descricao: '',
   qtd: '',
-  valor: '0',
+  valor: '',
+  imgCapaUrl: '',
   ativo: true,
 };
 
@@ -72,6 +76,8 @@ function Produto() {
   const [tipoMedidaList, setTipoMedidaList] = useState([]);
   const [valor, setValor] = useState('');
 
+  const [uploadFile, setUploadFile] = useState(null);
+
   const user = useSelector(selectUser);
   const routeParams = useParams();
   const dispatch = useDispatch();
@@ -82,7 +88,7 @@ function Produto() {
     resolver: yupResolver(schema),
   });
 
-  const { isValid, errors, dirtyFields } = formState;
+  const { isValid, errors } = formState;
 
   // Função consulta lista de contatos
   const getCategoriasProdutos = async () => {
@@ -115,12 +121,25 @@ function Produto() {
       .then((response) => {
         setValue('id', response.data.conteudo[0].id, { shouldValidate: true });
         setValue('nome', response.data.conteudo[0].nome, { shouldValidate: true });
-        setValue('descricao', response.data.conteudo[0].descricao, { shouldValidate: true });
-        setValue('qtd', response.data.conteudo[0].qtd, { shouldValidate: true });
-        setValue('valor', response.data.conteudo[0].valor, { shouldValidate: true });
         setValue('tipoMedidaId', response.data.conteudo[0].tipoMedidaId, { shouldValidate: true });
         setValue('categoriaProdutoId', response.data.conteudo[0].categoriaProdutoId, { shouldValidate: true });
         setValue('ativo', response.data.conteudo[0].ativo, { shouldValidate: true });
+
+        if (response.data.conteudo[0].imgCapaUrl) {
+          setValue('imgCapaUrl', response.data.conteudo[0].imgCapaUrl, { shouldValidate: true });
+        }
+
+        if (response.data.conteudo[0].descricao) {
+          setValue('descricao', response.data.conteudo[0].descricao, { shouldValidate: true });
+        }
+
+        if (response.data.conteudo[0].qtd) {
+          setValue('qtd', response.data.conteudo[0].qtd, { shouldValidate: true });
+        }
+
+        if (response.data.conteudo[0].valor) {
+          setValue('valor', response.data.conteudo[0].valor, { shouldValidate: true });
+        }
 
         let newValor = String(response.data.conteudo[0].valor);
 
@@ -147,6 +166,13 @@ function Produto() {
     getCategoriasProdutos();
     getTiposMedidas();
   }, [routeParams]);
+
+  useEffect(() => {
+    if (uploadFile) {
+      const fileUrl = URL.createObjectURL(uploadFile);
+      setValue('imgCapaUrl', fileUrl, { shouldValidate: true });
+    }
+  }, [uploadFile]);
 
   function handleValor(data) {
     // Insere mascara monetária padrão pt-BR
@@ -197,6 +223,7 @@ function Produto() {
         }
 
         resetForm();
+        setValor('');
         setChecked(false);
       })
       .catch((error) => {
@@ -219,16 +246,32 @@ function Produto() {
   }
 
   async function onSubmit(data) {
-    // console.log(data);
     setLoadingSalvar(true);
 
     if (data.valor === '') {
       data.valor = '0';
     }
 
+    // if (data.qtd === '') {
+    //   data.qtd = '0';
+    // }
+
+    const newData = new FormData();
+    newData.append('id', data.id);
+    newData.append('empresaId', data.empresaId);
+    newData.append('categoriaProdutoId', data.categoriaProdutoId);
+    newData.append('tipoMedidaId', data.tipoMedidaId);
+    newData.append('nome', data.nome);
+    newData.append('descricao', data.descricao);
+    newData.append('qtd', data.qtd);
+    newData.append('valor', valor);
+    newData.append('imgCapa', uploadFile);
+    newData.append('imgCapaUrl', data.imgCapaUrl);
+    newData.append('ativo', data.ativo);
+
     if (data.id) {
       await axios
-        .patch('Produto', data)
+        .patch('Produto', newData)
         .then((response) => {
           dispatch(
             showMessage({
@@ -258,7 +301,7 @@ function Produto() {
         });
     } else {
       await axios
-        .post('Produto', data)
+        .post('Produto', newData)
         .then((response) => {
           dispatch(
             showMessage({
@@ -301,12 +344,10 @@ function Produto() {
         header={
           <FormHeader
             handleExcluir={openConfirmExcluir}
-            loadingLogin={loadingSalvar}
+            loadingSalvar={loadingSalvar}
             loadingExcluir={loadingExcluir}
             getValues={getValues}
-            dirtyFields={dirtyFields}
             isValid={isValid}
-            reset={resetForm}
           />
         }
         content={
@@ -320,9 +361,10 @@ function Produto() {
                 errors={errors}
                 checked={checked}
                 setChecked={setChecked}
-                setValue={setValue}
                 valor={valor}
                 handleValor={handleValor}
+                getValues={getValues}
+                setUploadFile={setUploadFile}
               />
             </div>
 

@@ -11,7 +11,6 @@ function FormHeader({
   loadingSalvar,
   loadingExcluir,
   getValues,
-  dirtyFields,
   isValid,
 }) {
   const theme = useTheme();
@@ -47,7 +46,7 @@ function FormHeader({
           >
             <img
               className="w-32 sm:w-48 rounded"
-              src="assets/images/apps/ecommerce/product-image-placeholder.png"
+              src={getValues('imgCapaUrl') || 'assets/images/products/product-image-placeholder.png'}
               alt="profile"
             />
           </motion.div>
