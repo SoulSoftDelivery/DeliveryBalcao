@@ -14,6 +14,7 @@ import ProfileConfig from '../main/profile/ProfileConfig';
 import EditPasswordConfig from '../main/edit-password/EditPasswordConfig';
 import ClientesConfig from '../main/clientes/ClientesConfig';
 import ProdutosConfig from '../main/produtos/ProdutosConfig';
+import MesasConfig from '../main/mesas/MesasConfig';
 
 const routeConfigs = [
   ExampleConfig,
@@ -27,6 +28,7 @@ const routeConfigs = [
   EditPasswordConfig,
   ClientesConfig,
   ProdutosConfig,
+  MesasConfig,
 ];
 
 const routes = [

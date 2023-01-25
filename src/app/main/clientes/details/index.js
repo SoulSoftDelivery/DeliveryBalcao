@@ -6,13 +6,11 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import numeral from 'numeral';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { selectUser } from 'app/store/userSlice';
-import FormHeader from './FormHeader';
+import FormHeader from './formHeader';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
-import { currencyMask } from '../../../utilities/mask/currency';
 import Form from './form';
 
 const Root = styled(FusePageCarded)({
@@ -29,54 +27,67 @@ const schema = yup.object().shape({
     .string()
     .nullable()
     .required('Digite o nome'),
-  descricao: yup
+  telefone: yup
+    .string()
+    .nullable()
+    .required('Digite o número de telefone'),
+  email: yup
+    .string()
+    .email('Digite um email válido')
+    .nullable(),
+  sexo: yup
     .string()
     .nullable(),
-  qtd: yup
+  rua: yup
+    .string()
+    .nullable()
+    .required('Digite a rua'),
+  quadra: yup
     .string()
     .nullable(),
-  valor: yup
+  lote: yup
     .string()
-    // .required('Digite o valor')
     .nullable(),
-  imgCapaUrl: yup
+  numero: yup
+    .string()
+    .nullable(),
+  bairro: yup
+    .string()
+    .nullable()
+    .required('Digite o bairro'),
+  complemento: yup
     .string()
     .nullable(),
   ativo: yup
     .bool(),
-  categoriaProdutoId: yup
-    .string()
-    .nullable()
-    .required("Selecione uma Categoria para o produto"),
-  tipoMedidaId: yup
-    .string()
-    .nullable()
-    .required("Selecione um Tipo de Medida para o produto")
 });
 
 const defaultValues = {
-  id: 0,
   empresaId: 0,
-  categoriaProdutoId: '',
-  tipoMedidaId: '',
+  clienteId: 0,
   nome: '',
-  descricao: '',
-  qtd: '',
-  valor: '',
-  imgCapaUrl: '',
-  ativo: true,
+  telefone: '',
+  email: '',
+  sexo: '',
+  clienteSituacao: 0,
+  enderecoId: 0,
+  uf: '',
+  cidade: '',
+  cep: '',
+  rua: '',
+  quadra: '',
+  lote: '',
+  numero: '',
+  bairro: '',
+  complemento: '',
+  ativo: false,
 };
 
-function Produto() {
+function Cliente() {
   const [loadingSalvar, setLoadingSalvar] = useState(false);
   const [loadingExcluir, setLoadingExcluir] = useState(false);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
   const [checked, setChecked] = useState(true);
-  const [categoriaProdutoList, setCategoriaProdutoList] = useState([]);
-  const [tipoMedidaList, setTipoMedidaList] = useState([]);
-  const [valor, setValor] = useState('');
-
-  const [uploadFile, setUploadFile] = useState(null);
 
   const user = useSelector(selectUser);
   const routeParams = useParams();
@@ -88,66 +99,30 @@ function Produto() {
     resolver: yupResolver(schema),
   });
 
-  const { isValid, errors } = formState;
+  const { isValid, errors, dirtyFields } = formState;
 
-  // Função consulta lista de contatos
-  const getCategoriasProdutos = async () => {
+  // Busca o Cliente
+  const getClientes = async (clienteId) => {
     axios
-      .get('CategoriaProduto')
+      .get(`Cliente/${clienteId}`)
       .then((response) => {
-        setCategoriaProdutoList(response.data.conteudo[0]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // Função consulta lista de contatos
-  const getTiposMedidas = async () => {
-    axios
-      .get('TipoMedida')
-      .then((response) => {
-        setTipoMedidaList(response.data.conteudo[0]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // Busca o Produto
-  const getProduto = async (produtoId) => {
-    axios
-      .get('Produto/' + produtoId)
-      .then((response) => {
-        setValue('id', response.data.conteudo[0].id, { shouldValidate: true });
+        setValue('clienteId', response.data.conteudo[0].clienteId, { shouldValidate: true });
         setValue('nome', response.data.conteudo[0].nome, { shouldValidate: true });
-        setValue('tipoMedidaId', response.data.conteudo[0].tipoMedidaId, { shouldValidate: true });
-        setValue('categoriaProdutoId', response.data.conteudo[0].categoriaProdutoId, { shouldValidate: true });
+        setValue('telefone', response.data.conteudo[0].telefone, { shouldValidate: true });
+        setValue('email', response.data.conteudo[0].email, { shouldValidate: true });
+        setValue('sexo', response.data.conteudo[0].sexo, { shouldValidate: true });
+        setValue('clienteSituacao', response.data.conteudo[0].clienteSituacao, { shouldValidate: true });
+        setValue('enderecoId', response.data.conteudo[0].enderecoId, { shouldValidate: true });
+        setValue('uf', response.data.conteudo[0].cidade, { shouldValidate: true });
+        setValue('cep', response.data.conteudo[0].cep, { shouldValidate: true });
+        setValue('cidade', response.data.conteudo[0].cidade, { shouldValidate: true });
+        setValue('rua', response.data.conteudo[0].rua, { shouldValidate: true });
+        setValue('quadra', response.data.conteudo[0].quadra, { shouldValidate: true });
+        setValue('lote', response.data.conteudo[0].lote, { shouldValidate: true });
+        setValue('numero', response.data.conteudo[0].numero, { shouldValidate: true });
+        setValue('bairro', response.data.conteudo[0].bairro, { shouldValidate: true });
+        setValue('complemento', response.data.conteudo[0].complemento, { shouldValidate: true });
         setValue('ativo', response.data.conteudo[0].ativo, { shouldValidate: true });
-
-        if (response.data.conteudo[0].imgCapaUrl) {
-          setValue('imgCapaUrl', response.data.conteudo[0].imgCapaUrl, { shouldValidate: true });
-        }
-
-        if (response.data.conteudo[0].descricao) {
-          setValue('descricao', response.data.conteudo[0].descricao, { shouldValidate: true });
-        }
-
-        if (response.data.conteudo[0].qtd) {
-          setValue('qtd', response.data.conteudo[0].qtd, { shouldValidate: true });
-        }
-
-        if (response.data.conteudo[0].valor) {
-          setValue('valor', response.data.conteudo[0].valor, { shouldValidate: true });
-        }
-
-        let newValor = String(response.data.conteudo[0].valor);
-
-        if (newValor !== '0') {
-          // Ajusta casas decimais para padrão 2
-          newValor = numeral(newValor).format('0.00');
-          handleValor(newValor);
-        }
 
         setChecked(response.data.conteudo[0].ativo);
       })
@@ -157,32 +132,12 @@ function Produto() {
   };
 
   useEffect(() => {
-    if (routeParams.produtoId !== "new") {
-      getProduto(routeParams.produtoId);
+    if (routeParams.clienteId !== "new") {
+      getClientes(routeParams.clienteId);
     }
 
     setValue('empresaId', user.empresaId, { shouldValidate: true });
-
-    getCategoriasProdutos();
-    getTiposMedidas();
   }, [routeParams]);
-
-  useEffect(() => {
-    if (uploadFile) {
-      const fileUrl = URL.createObjectURL(uploadFile);
-      setValue('imgCapaUrl', fileUrl, { shouldValidate: true });
-    }
-  }, [uploadFile]);
-
-  function handleValor(data) {
-    // Insere mascara monetária padrão pt-BR
-    data = currencyMask(data);
-    setValor(data);
-    // // Altera para o padrão float
-    data = data.replace(".", "");
-    data = data.replace(",", ".");
-    setValue('valor', data, { shouldValidate: true });
-  }
 
   // Abre a caixa de confirmação de Exclusão
   function openConfirmExcluir() {
@@ -194,7 +149,7 @@ function Produto() {
     setLoadingExcluir(true);
 
     axios
-      .delete('Produto/' + getValues('id'))
+      .delete(`Cliente/${getValues('clienteId')}`)
       .then((response) => {
         if (response.data.msg) {
           dispatch(
@@ -223,7 +178,6 @@ function Produto() {
         }
 
         resetForm();
-        setValor('');
         setChecked(false);
       })
       .catch((error) => {
@@ -248,30 +202,9 @@ function Produto() {
   async function onSubmit(data) {
     setLoadingSalvar(true);
 
-    if (data.valor === '') {
-      data.valor = '0';
-    }
-
-    // if (data.qtd === '') {
-    //   data.qtd = '0';
-    // }
-
-    const newData = new FormData();
-    newData.append('id', data.id);
-    newData.append('empresaId', data.empresaId);
-    newData.append('categoriaProdutoId', data.categoriaProdutoId);
-    newData.append('tipoMedidaId', data.tipoMedidaId);
-    newData.append('nome', data.nome);
-    newData.append('descricao', data.descricao);
-    newData.append('qtd', data.qtd);
-    newData.append('valor', valor);
-    newData.append('imgCapa', uploadFile);
-    newData.append('imgCapaUrl', data.imgCapaUrl);
-    newData.append('ativo', data.ativo);
-
-    if (data.id) {
+    if (data.clienteId) {
       await axios
-        .patch('Produto', newData)
+        .patch('Cliente', data)
         .then((response) => {
           dispatch(
             showMessage({
@@ -301,7 +234,7 @@ function Produto() {
         });
     } else {
       await axios
-        .post('Produto', newData)
+        .post('Cliente', data)
         .then((response) => {
           dispatch(
             showMessage({
@@ -347,6 +280,7 @@ function Produto() {
             loadingSalvar={loadingSalvar}
             loadingExcluir={loadingExcluir}
             getValues={getValues}
+            dirtyFields={dirtyFields}
             isValid={isValid}
           />
         }
@@ -355,16 +289,10 @@ function Produto() {
             <div className="flex-auto p-24 sm:p-40">
               {/* Formulária da página */}
               <Form
-                categoriaProdutoList={categoriaProdutoList}
-                tipoMedidaList={tipoMedidaList}
                 control={control}
                 errors={errors}
                 checked={checked}
                 setChecked={setChecked}
-                valor={valor}
-                handleValor={handleValor}
-                getValues={getValues}
-                setUploadFile={setUploadFile}
               />
             </div>
 
@@ -383,4 +311,4 @@ function Produto() {
   );
 }
 
-export default Produto;
+export default Cliente;

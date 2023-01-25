@@ -5,8 +5,8 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
-import TableHead from './TableHead';
-import RowTable from './RowTable';
+import TableHead from './tableHead';
+import RowTable from './rowTable';
 
 function TableContent({
   clienteList,

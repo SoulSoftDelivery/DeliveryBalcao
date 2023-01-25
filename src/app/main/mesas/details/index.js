@@ -9,7 +9,7 @@ import axios from 'axios';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { selectUser } from 'app/store/userSlice';
-import FormHeader from './FormHeader';
+import FormHeader from './formHeader';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
 import Form from './form';
 
@@ -23,67 +23,22 @@ const Root = styled(FusePageCarded)({
 
 // Validação de formulário
 const schema = yup.object().shape({
-  nome: yup
-    .string()
-    .nullable()
-    .required('Digite o nome'),
-  telefone: yup
-    .string()
-    .nullable()
-    .required('Digite o número de telefone'),
-  email: yup
-    .string()
-    .email('Digite um email válido')
-    .nullable(),
-  sexo: yup
-    .string()
-    .nullable(),
-  rua: yup
-    .string()
-    .nullable()
-    .required('Digite a rua'),
-  quadra: yup
-    .string()
-    .nullable(),
-  lote: yup
-    .string()
-    .nullable(),
   numero: yup
-    .string()
-    .nullable(),
-  bairro: yup
-    .string()
+    .number()
     .nullable()
-    .required('Digite o bairro'),
-  complemento: yup
-    .string()
-    .nullable(),
+    .required('Digite o número da mesa'),
   ativo: yup
     .bool(),
 });
 
 const defaultValues = {
+  id: 0,
   empresaId: 0,
-  clienteId: 0,
-  nome: '',
-  telefone: '',
-  email: '',
-  sexo: '',
-  clienteSituacao: 0,
-  enderecoId: 0,
-  uf: '',
-  cidade: '',
-  cep: '',
-  rua: '',
-  quadra: '',
-  lote: '',
-  numero: '',
-  bairro: '',
-  complemento: '',
-  ativo: false,
+  numero: 0,
+  ativo: true,
 };
 
-function Cliente() {
+function Details() {
   const [loadingSalvar, setLoadingSalvar] = useState(false);
   const [loadingExcluir, setLoadingExcluir] = useState(false);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
@@ -101,27 +56,13 @@ function Cliente() {
 
   const { isValid, errors, dirtyFields } = formState;
 
-  // Busca o Cliente
-  const getClientes = async (clienteId) => {
+  // Busca a Mesa
+  const getMesa = async (mesaId) => {
     axios
-      .get('Cliente/' + clienteId)
+      .get(`Mesa/${mesaId}`)
       .then((response) => {
-        setValue('clienteId', response.data.conteudo[0].clienteId, { shouldValidate: true });
-        setValue('nome', response.data.conteudo[0].nome, { shouldValidate: true });
-        setValue('telefone', response.data.conteudo[0].telefone, { shouldValidate: true });
-        setValue('email', response.data.conteudo[0].email, { shouldValidate: true });
-        setValue('sexo', response.data.conteudo[0].sexo, { shouldValidate: true });
-        setValue('clienteSituacao', response.data.conteudo[0].clienteSituacao, { shouldValidate: true });
-        setValue('enderecoId', response.data.conteudo[0].enderecoId, { shouldValidate: true });
-        setValue('uf', response.data.conteudo[0].cidade, { shouldValidate: true });
-        setValue('cep', response.data.conteudo[0].cep, { shouldValidate: true });
-        setValue('cidade', response.data.conteudo[0].cidade, { shouldValidate: true });
-        setValue('rua', response.data.conteudo[0].rua, { shouldValidate: true });
-        setValue('quadra', response.data.conteudo[0].quadra, { shouldValidate: true });
-        setValue('lote', response.data.conteudo[0].lote, { shouldValidate: true });
+        setValue('id', response.data.conteudo[0].id, { shouldValidate: true });
         setValue('numero', response.data.conteudo[0].numero, { shouldValidate: true });
-        setValue('bairro', response.data.conteudo[0].bairro, { shouldValidate: true });
-        setValue('complemento', response.data.conteudo[0].complemento, { shouldValidate: true });
         setValue('ativo', response.data.conteudo[0].ativo, { shouldValidate: true });
 
         setChecked(response.data.conteudo[0].ativo);
@@ -132,8 +73,8 @@ function Cliente() {
   };
 
   useEffect(() => {
-    if (routeParams.clienteId !== "new") {
-      getClientes(routeParams.clienteId);
+    if (routeParams.mesaId !== "new") {
+      getMesa(routeParams.mesaId);
     }
 
     setValue('empresaId', user.empresaId, { shouldValidate: true });
@@ -149,7 +90,7 @@ function Cliente() {
     setLoadingExcluir(true);
 
     axios
-      .delete('Cliente/' + getValues('clienteId'))
+      .delete(`Mesa/${getValues('mesaId')}`)
       .then((response) => {
         if (response.data.msg) {
           dispatch(
@@ -202,9 +143,9 @@ function Cliente() {
   async function onSubmit(data) {
     setLoadingSalvar(true);
 
-    if (data.clienteId) {
+    if (data.id) {
       await axios
-        .patch('Cliente', data)
+        .patch('Mesa', data)
         .then((response) => {
           dispatch(
             showMessage({
@@ -234,7 +175,7 @@ function Cliente() {
         });
     } else {
       await axios
-        .post('Cliente', data)
+        .post('Mesa', data)
         .then((response) => {
           dispatch(
             showMessage({
@@ -293,7 +234,6 @@ function Cliente() {
                 errors={errors}
                 checked={checked}
                 setChecked={setChecked}
-                setValue={setValue}
               />
             </div>
 
@@ -312,4 +252,4 @@ function Cliente() {
   );
 }
 
-export default Cliente;
+export default Details;

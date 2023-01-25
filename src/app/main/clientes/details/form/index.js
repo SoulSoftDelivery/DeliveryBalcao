@@ -8,7 +8,6 @@ const index = ({
   errors,
   checked,
   setChecked,
-  setValue,
 }) => {
   return (
     <>

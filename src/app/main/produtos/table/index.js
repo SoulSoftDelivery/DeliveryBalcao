@@ -6,10 +6,10 @@ import { showMessage } from 'app/store/fuse/messageSlice';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import TableContent from './TableContent';
+import TableContent from './tableContent';
 import ConfirmAlertExcluir from '../../../utilities/confirmAlert';
 import PageHeader from '../../../utilities/layout/pageHeader';
-import Filters from './Filters';
+import Filters from './filters';
 
 const Root = styled(FusePageCarded)({
   '& .FusePageCarded-header': {},
@@ -19,12 +19,14 @@ const Root = styled(FusePageCarded)({
   '& .FusePageCarded-sidebarContent': {},
 });
 
-function Clientes() {
+function Index() {
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [clienteIdClick, setClienteIdClick] = useState(0);
-  const [clienteList, setClienteList] = useState([]);
+  const [produtoIdClick, setProdutoIdClick] = useState(0);
+  const [produtoList, setProdutoList] = useState([]);
+  const [categoriaProdutoList, setCategoriaProdutoList] = useState([]);
+  const [tipoMedidaList, setTipoMedidaList] = useState([]);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
   const [buttonLoading, setButtonLoading] = useState({
     'button': '',
@@ -34,17 +36,43 @@ function Clientes() {
 
   // Filter
   const [nomeFilter, setNomeFilter] = useState('');
+  const [categoriaIdFilter, setCategoriaIdFilter] = useState('');
+  const [tipoMedidaIdFilter, setTipoMedidaIdFilter] = useState('');
   const [situacaoFilter, setSituacaoFilter] = useState('');
 
   const user = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const getClientes = async () => {
+  const getCategoriasProdutos = async () => {
+    axios
+      .get('CategoriaProduto')
+      .then((response) => {
+        setCategoriaProdutoList(response.data.conteudo[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getTiposMedidas = async () => {
+    axios
+      .get('TipoMedida')
+      .then((response) => {
+        setTipoMedidaList(response.data.conteudo[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getProdutos = async () => {
     const data = {
       params: {
         'empresaId': user.empresaId,
         'nome': nomeFilter.trim(),
+        'categoriaProdutoId': categoriaIdFilter === '' ? 0 : categoriaIdFilter,
+        'tipoMedidaId': tipoMedidaIdFilter === '' ? 0 : tipoMedidaIdFilter,
         'situacao': situacaoFilter === '' ? 0 : situacaoFilter,
         'page': page,
         'pageSize': rowsPerPage,
@@ -52,26 +80,28 @@ function Clientes() {
     };
 
     axios
-      .get('Cliente/', data)
+      .get('Produto', data)
       .then((response) => {
-        setClienteList(response.data.conteudo[0].results[0]);
+        setProdutoList(response.data.conteudo[0].results[0]);
         setTotalRows(response.data.conteudo[0].totalRows);
       })
       .catch((error) => {
-        setClienteList([]);
+        setProdutoList([]);
         console.log(error);
       });
   };
 
   // Busca as listas após a renderização da página
   useEffect(() => {
-    getClientes();
+    getCategoriasProdutos();
+    getTiposMedidas();
+    getProdutos();
   }, []);
 
   // Atualiza a lista de Clientes quando uma paginação ou filtro é alterado
   useEffect(() => {
-    getClientes();
-  }, [nomeFilter, situacaoFilter, rowsPerPage, page]);
+    getProdutos();
+  }, [nomeFilter, categoriaIdFilter, tipoMedidaIdFilter, situacaoFilter, rowsPerPage, page]);
 
   function handleChangePage(event, value) {
     setPage(value);
@@ -85,27 +115,27 @@ function Clientes() {
     setNomeFilter(data);
   }
 
-  function handleEditar(clienteId) {
-    navigate('/cliente/' + clienteId);
+  function handleEditar(produtoId) {
+    navigate(`/produto/${produtoId}`);
   }
 
   // Abre a caixa de confirmação de Exclusão
-  function openConfirmExcluir(clienteId) {
+  function openConfirmExcluir(produtoId) {
     setShowConfirmExcluir(true);
     // Guarda a data de importação selecionada
-    setClienteIdClick(clienteId);
+    setProdutoIdClick(produtoId);
   }
 
   async function handleExcluir() {
     // Inicia o load
     setButtonLoading({
       'button': 'Excluir',
-      'id': clienteIdClick,
+      'id': produtoIdClick,
       'loading': true,
     });
 
     await axios
-      .delete('Cliente/' + clienteIdClick)
+      .delete(`Produto/${produtoIdClick}`)
       .then((response) => {
         if (response.data.msg) {
           dispatch(
@@ -133,7 +163,7 @@ function Clientes() {
           );
         }
 
-        getClientes();
+        getProdutos();
       })
       .catch((error) => {
         dispatch(
@@ -153,34 +183,42 @@ function Clientes() {
     // Finaliza o load
     setButtonLoading({
       'button': 'Excluir',
-      'id': clienteIdClick,
+      'id': produtoIdClick,
       'loading': false,
     });
 
-    setClienteIdClick(0);
+    setProdutoIdClick(0);
   }
 
   function resetFilters() {
     setNomeFilter('');
+    setCategoriaIdFilter('');
+    setTipoMedidaIdFilter('');
     setSituacaoFilter('');
   }
 
   return (
     <Root
-      header={<PageHeader title="Clientes" buttonUrl="/Cliente/new" />}
+      header={<PageHeader title="Produtos" buttonUrl="/produto/new" />}
       content={
         <div className="flex-auto p-24 sm:p-40">
           {/* Filtros */}
           <Filters
+            categoriaProdutoList={categoriaProdutoList}
+            tipoMedidaList={tipoMedidaList}
             nomeFilter={nomeFilter}
             handleNomeFilter={handleNomeFilter}
+            categoriaIdFilter={categoriaIdFilter}
+            setCategoriaIdFilter={setCategoriaIdFilter}
+            tipoMedidaIdFilter={tipoMedidaIdFilter}
+            setTipoMedidaIdFilter={setTipoMedidaIdFilter}
             situacaoFilter={situacaoFilter}
             setSituacaoFilter={setSituacaoFilter}
             resetFilters={resetFilters}
           />
           {/* Tabela */}
           <TableContent
-            clienteList={clienteList}
+            produtoList={produtoList}
             buttonLoading={buttonLoading}
             handleExcluir={openConfirmExcluir}
             handleEditar={handleEditar}
@@ -204,4 +242,4 @@ function Clientes() {
   );
 }
 
-export default Clientes;
+export default Index;

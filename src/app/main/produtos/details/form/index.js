@@ -15,7 +15,6 @@ const index = ({
   setChecked,
   valor,
   handleValor,
-  getValues,
   setUploadFile,
 }) => {
   return (

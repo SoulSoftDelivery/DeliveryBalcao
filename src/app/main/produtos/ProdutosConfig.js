@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
-const Details = lazy(() => import('./details/Produto'));
-const Table = lazy(() => import('./table/Produtos'));
+const Details = lazy(() => import('./details'));
+const Table = lazy(() => import('./table'));
 
 const ClientesConfig = {
   settings: {

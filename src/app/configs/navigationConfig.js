@@ -43,6 +43,12 @@ const navigationConfig = [
         type: 'item',
         url: 'produtos',
       },
+      {
+        id: 'cadastroMesa',
+        title: 'Mesas',
+        type: 'item',
+        url: 'mesas',
+      },
     ],
   },
 ];
