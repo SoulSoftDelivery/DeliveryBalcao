@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import FuseSvgIcon from 'src/@fuse/core/FuseSvgIcon';
 import Button from '@mui/material/Button';
-import './style.css';
+// import './style.css';
 
 function UploadDropzone({
   setUploadFile,
