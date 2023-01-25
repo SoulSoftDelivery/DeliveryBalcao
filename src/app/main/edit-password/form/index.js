@@ -1,5 +1,5 @@
 import React from 'react';
-import InputPassword from 'src/app/utilities/inputs/inputPassword';
+import InputPasswordToggleView from 'src/app/utilities/inputs/inputPasswordToggleView';
 import ButtonReset from 'src/app/utilities/buttons/reset';
 import ButtonConfirm from 'src/app/utilities/buttons/confirm';
 
@@ -23,7 +23,7 @@ const index = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-col md:grid-cols-3 md:gap-3">
         <div>
-          <InputPassword
+          <InputPasswordToggleView
             label="Senha Atual"
             name="senhaAtual"
             showSenha={showSenhaAtual}
@@ -35,7 +35,7 @@ const index = ({
         </div>
 
         <div>
-          <InputPassword
+          <InputPasswordToggleView
             label="Nova Senha"
             name="novaSenha"
             showSenha={showSenhaNova}
@@ -47,7 +47,7 @@ const index = ({
         </div>
 
         <div>
-          <InputPassword
+          <InputPasswordToggleView
             label="Confirmar Nova Senha"
             name="confirmarNovaSenha"
             showSenha={showSenhaConfirmar}

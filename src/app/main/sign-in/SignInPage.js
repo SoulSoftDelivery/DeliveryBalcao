@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import _ from '@lodash';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import { Link } from 'react-router-dom';
 import jwtService from '../../auth/services/jwtService';
 import GeneralAlert from '../../utilities/generalAlert';
 import Form from './form';
@@ -32,6 +33,7 @@ const defaultValues = {
 
 function SignInPage() {
   const [loadingLogin, setLoadingLogin] = useState(false);
+  const [showSenha, setShowSenha] = useState(false);
 
   const { control, formState, handleSubmit, setError } = useForm({
     mode: 'onChange',
@@ -72,24 +74,26 @@ function SignInPage() {
           <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight">
             Entrar
           </Typography>
-          {/* <div className="flex items-baseline mt-2 font-medium">
+          <div className="flex items-baseline mt-2 font-medium">
             <Typography>Não possui conta?</Typography>
             <Link className="ml-4" to="/sign-up">
-              Sign up
+              Cadastrar
             </Link>
-          </div> */}
+          </div>
 
           {/* Formulário de Login */}
           <div className="w-full">
             {/* Novo Alert de erro aqui */}
             {errors.generalErrors && (
-              <div className='mt-10'>
+              <div className="mt-10">
                 <GeneralAlert type="error" message={errors.generalErrors.message} />
               </div>
             )}
 
             {/* Formulária da página */}
             <Form
+              setShowSenha={setShowSenha}
+              showSenha={showSenha}
               loadingLogin={loadingLogin}
               dirtyFields={dirtyFields}
               isValid={isValid}
@@ -155,7 +159,7 @@ function SignInPage() {
             <div>Bem-vindo!</div>
           </div>
           <div className="mt-24 text-lg tracking-tight leading-6 text-gray-400">
-            A SOULSOFT É UMA EMPRESA QUE TRANSFORMAR O SEU NEGÓCIO ATRAVÉS DO SOFTWARE.
+            CONHEÇA JÁ A PLATAFORMA MAIS COMPLETA DE CONTROLE DE PEDIDOS PARA O SEU DELIVERY!
           </div>
         </div>
       </Box>

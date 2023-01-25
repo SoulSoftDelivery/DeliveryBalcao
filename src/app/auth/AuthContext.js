@@ -15,7 +15,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     jwtService.on('onAutoLogin', () => {
-      dispatch(showMessage({ message: 'Conectando com JWT' }));
+      dispatch(showMessage({ message: 'Conectando' }));
 
       /**
        * Sign in and retrieve user data with stored token
@@ -23,7 +23,7 @@ function AuthProvider({ children }) {
       jwtService
         .signInWithToken()
         .then((user) => {
-          success(user, 'Conectado com JWT');
+          success(user, 'Conectado');
         })
         .catch((error) => {
           pass(error.message);

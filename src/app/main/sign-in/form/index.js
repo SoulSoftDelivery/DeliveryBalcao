@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LoadingButton from '@mui/lab/LoadingButton';
+import InputPasswordToggleView from 'src/app/utilities/inputs/inputPasswordToggleView';
 import InputText from '../../../utilities/inputs/inputText';
-import InputPassword from '../../../utilities/inputs/inputPassword';
 import InputCheckbox from '../../../utilities/inputs/inputCheckbox';
 
 const index = ({
+  showSenha,
+  setShowSenha,
   loadingLogin,
   dirtyFields,
   isValid,
@@ -31,9 +33,11 @@ const index = ({
         helperText={errors?.email?.message}
       />
 
-      <InputPassword
+      <InputPasswordToggleView
         label="Senha"
         name="senha"
+        showSenha={showSenha}
+        setShowSenha={setShowSenha}
         control={control}
         error={!!errors.senha}
         helperText={errors?.senha?.message}

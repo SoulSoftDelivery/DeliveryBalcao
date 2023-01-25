@@ -131,7 +131,7 @@ class JwtService extends FuseUtils.EventEmitter {
             var usuario = response.data.conteudo[0];
 
             const dataUserSession = {
-              'nome': (usuario.nome).substr(0, 20),
+              'nome': usuario.nome,
               'email': usuario.email,
               'telefone': usuario.telefone,
               'empresaId': usuario.empresaId,
