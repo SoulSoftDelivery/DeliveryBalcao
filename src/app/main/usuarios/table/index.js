@@ -23,8 +23,8 @@ function Index() {
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [clienteIdClick, setClienteIdClick] = useState(0);
-  const [clienteList, setClienteList] = useState([]);
+  const [usuarioIdClick, setUsuarioIdClick] = useState(0);
+  const [usuariosLista, setUsuariosLista] = useState([]);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
   const [buttonLoading, setButtonLoading] = useState({
     'button': '',
@@ -40,7 +40,7 @@ function Index() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const getClientes = async () => {
+  const getUsuarios = async () => {
     const data = {
       params: {
         'empresaId': user.empresaId,
@@ -52,25 +52,25 @@ function Index() {
     };
 
     axios
-      .get('Cliente/', data)
+      .get('Usuario/', data)
       .then((response) => {
-        setClienteList(response.data.conteudo[0].results[0]);
+        setUsuariosLista(response.data.conteudo[0].results[0]);
         setTotalRows(response.data.conteudo[0].totalRows);
       })
       .catch((error) => {
-        setClienteList([]);
+        setUsuariosLista([]);
         console.log(error);
       });
   };
 
   // Busca as listas após a renderização da página
   useEffect(() => {
-    getClientes();
+    getUsuarios();
   }, []);
 
-  // Atualiza a lista de Clientes quando uma paginação ou filtro é alterado
+  // Atualiza a lista de Usuarios quando uma paginação ou filtro é alterado
   useEffect(() => {
-    getClientes();
+    getUsuarios();
   }, [nomeFilter, situacaoFilter, rowsPerPage, page]);
 
   function handleChangePage(event, value) {
@@ -85,27 +85,27 @@ function Index() {
     setNomeFilter(data);
   }
 
-  function handleEditar(clienteId) {
-    navigate(`/cliente/${clienteId}`);
+  function handleEditar(usuarioId) {
+    navigate(`/usuario/${usuarioId}`);
   }
 
   // Abre a caixa de confirmação de Exclusão
-  function openConfirmExcluir(clienteId) {
+  function openConfirmExcluir(usuarioId) {
     setShowConfirmExcluir(true);
     // Guarda a data de importação selecionada
-    setClienteIdClick(clienteId);
+    setUsuarioIdClick(usuarioId);
   }
 
   async function handleExcluir() {
     // Inicia o load
     setButtonLoading({
       'button': 'Excluir',
-      'id': clienteIdClick,
+      'id': usuarioIdClick,
       'loading': true,
     });
 
     await axios
-      .delete(`Cliente/${clienteIdClick}`)
+      .delete(`Usuario/${usuarioIdClick}`)
       .then((response) => {
         if (response.data.msg) {
           dispatch(
@@ -133,7 +133,7 @@ function Index() {
           );
         }
 
-        getClientes();
+        getUsuarios();
       })
       .catch((error) => {
         dispatch(
@@ -153,11 +153,11 @@ function Index() {
     // Finaliza o load
     setButtonLoading({
       'button': 'Excluir',
-      'id': clienteIdClick,
+      'id': usuarioIdClick,
       'loading': false,
     });
 
-    setClienteIdClick(0);
+    setUsuarioIdClick(0);
   }
 
   function resetFilters() {
@@ -167,7 +167,7 @@ function Index() {
 
   return (
     <Root
-      header={<PageHeader title="Clientes" buttonUrl="/cliente/new" />}
+      header={<PageHeader title="Usuarios" buttonUrl="/usuario/new" />}
       content={
         <div className="flex-auto p-24 sm:p-40">
           {/* Filtros */}
@@ -180,7 +180,7 @@ function Index() {
           />
           {/* Tabela */}
           <TableContent
-            clienteList={clienteList}
+            lista={usuariosLista}
             buttonLoading={buttonLoading}
             handleExcluir={openConfirmExcluir}
             handleEditar={handleEditar}

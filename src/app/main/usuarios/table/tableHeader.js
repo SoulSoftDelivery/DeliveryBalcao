@@ -12,10 +12,24 @@ const rows = [
     sort: false,
   },
   {
-    id: 'numero',
+    id: 'nome',
     align: 'left',
     disablePadding: false,
-    label: 'Número',
+    label: 'Nome',
+    sort: false,
+  },
+  {
+    id: 'telefone',
+    align: 'left',
+    disablePadding: false,
+    label: 'Telefone',
+    sort: false,
+  },
+  {
+    id: 'email',
+    align: 'left',
+    disablePadding: false,
+    label: 'Email',
     sort: false,
   },
   {
@@ -41,7 +55,7 @@ const rows = [
   },
 ];
 
-function ProductsTableHead(props) {
+function TableHeader(props) {
   return (
     <TableHead>
       <TableRow className="h-48 sm:h-64">
@@ -69,4 +83,4 @@ function ProductsTableHead(props) {
   );
 }
 
-export default ProductsTableHead;
+export default TableHeader;

@@ -67,7 +67,7 @@ const defaultValues = {
   ativo: true,
 };
 
-function Produto() {
+function Index() {
   const [loadingSalvar, setLoadingSalvar] = useState(false);
   const [loadingExcluir, setLoadingExcluir] = useState(false);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
@@ -382,4 +382,4 @@ function Produto() {
   );
 }
 
-export default Produto;
+export default Index;

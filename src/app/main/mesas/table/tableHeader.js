@@ -12,38 +12,10 @@ const rows = [
     sort: false,
   },
   {
-    id: 'nome',
+    id: 'numero',
     align: 'left',
     disablePadding: false,
-    label: 'Nome',
-    sort: false,
-  },
-  {
-    id: 'quantidade',
-    align: 'left',
-    disablePadding: false,
-    label: 'Qtd',
-    sort: false,
-  },
-  {
-    id: 'preco',
-    align: 'left',
-    disablePadding: false,
-    label: 'R$',
-    sort: false,
-  },
-  {
-    id: 'categoria',
-    align: 'left',
-    disablePadding: false,
-    label: 'Categoria',
-    sort: false,
-  },
-  {
-    id: 'tpmedica',
-    align: 'left',
-    disablePadding: false,
-    label: 'Tipo',
+    label: 'Número',
     sort: false,
   },
   {
@@ -69,7 +41,7 @@ const rows = [
   },
 ];
 
-function ProductsTableHead(props) {
+function TableHeader(props) {
   return (
     <TableHead>
       <TableRow className="h-48 sm:h-64">
@@ -97,4 +69,4 @@ function ProductsTableHead(props) {
   );
 }
 
-export default ProductsTableHead;
+export default TableHeader;

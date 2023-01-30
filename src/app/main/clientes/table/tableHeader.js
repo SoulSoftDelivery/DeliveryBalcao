@@ -55,7 +55,7 @@ const rows = [
   },
 ];
 
-function ProductsTableHead(props) {
+function TableHeader(props) {
   return (
     <TableHead>
       <TableRow className="h-48 sm:h-64">
@@ -83,4 +83,4 @@ function ProductsTableHead(props) {
   );
 }
 
-export default ProductsTableHead;
+export default TableHeader;

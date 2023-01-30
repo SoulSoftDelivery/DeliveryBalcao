@@ -9,7 +9,7 @@ import TableHead from './tableHeader';
 import RowTable from './rowTable';
 
 function TableContent({
-  clienteList,
+  lista,
   buttonLoading,
   handleExcluir,
   handleEditar,
@@ -19,7 +19,7 @@ function TableContent({
   handleChangePage,
   handleChangeRowsPerPage,
 }) {
-  if (clienteList.length === 0) {
+  if (lista.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center h-full">
         <Typography color="text.secondary" variant="h5">
@@ -35,11 +35,11 @@ function TableContent({
         <Table stickyHeader aria-label="sticky table">
           <TableHead />
           <TableBody>
-            {clienteList.map((cliente) => {
+            {lista.map((item) => {
               return (
                 <RowTable
-                  key={cliente.id}
-                  cliente={cliente}
+                  key={item.id}
+                  item={item}
                   handleExcluir={handleExcluir}
                   handleEditar={handleEditar}
                   buttonLoading={buttonLoading}

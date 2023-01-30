@@ -49,6 +49,12 @@ const navigationConfig = [
         type: 'item',
         url: 'mesas',
       },
+      {
+        id: 'cadastroUsuario',
+        title: 'Usuários',
+        type: 'item',
+        url: 'usuarios',
+      },
     ],
   },
 ];

@@ -35,58 +35,38 @@ const schema = yup.object().shape({
     .string()
     .email('Digite um email válido')
     .nullable(),
-  sexo: yup
+  senha: yup
     .string()
-    .nullable(),
-  rua: yup
-    .string()
-    .nullable()
-    .required('Digite a rua'),
-  quadra: yup
-    .string()
-    .nullable(),
-  lote: yup
-    .string()
-    .nullable(),
-  numero: yup
-    .string()
-    .nullable(),
-  bairro: yup
-    .string()
-    .nullable()
-    .required('Digite o bairro'),
-  complemento: yup
-    .string()
-    .nullable(),
+    .required('Digite a Senha.')
+    .min(4, 'Senha inválida - Mínimo de 4 caracteres.'),
+  // confirmarSenha: yup
+  //   .string()
+  //   .required('Confirme a Senha.')
+  //   .min(4, 'Senha inválida - Mínimo de 4 caracteres.')
+  //   .oneOf([yup.ref('senha'), null], 'Senhas diferentes.'),
   ativo: yup
     .bool(),
 });
 
 const defaultValues = {
+  id: 0,
   empresaId: 0,
-  clienteId: 0,
+  tipoUsuarioId: '',
   nome: '',
   telefone: '',
   email: '',
-  sexo: '',
-  clienteSituacao: 0,
-  enderecoId: 0,
-  uf: '',
-  cidade: '',
-  cep: '',
-  rua: '',
-  quadra: '',
-  lote: '',
-  numero: '',
-  bairro: '',
-  complemento: '',
+  senha: '',
+  // confirmarSenha: '',
   ativo: false,
 };
 
 function Index() {
+  const [showSenha, setShowSenha] = useState(false);
+  // const [showSenhaConfirmar, setShowSenhaConfirmar] = useState(false);
   const [loadingSalvar, setLoadingSalvar] = useState(false);
   const [loadingExcluir, setLoadingExcluir] = useState(false);
   const [showConfirmExcluir, setShowConfirmExcluir] = useState(false);
+  const [tipoUsuarioLista, setTipoUsuarioLista] = useState([]);
   const [checked, setChecked] = useState(true);
 
   const user = useSelector(selectUser);
@@ -101,27 +81,17 @@ function Index() {
 
   const { isValid, errors, dirtyFields } = formState;
 
-  // Busca o Cliente
-  const getClientes = async (clienteId) => {
+  // Busca o Usuario
+  const getItem = async (usuarioId) => {
     axios
-      .get(`Cliente/${clienteId}`)
+      .get(`Usuario/${usuarioId}`)
       .then((response) => {
-        setValue('clienteId', response.data.conteudo[0].clienteId, { shouldValidate: true });
+        setValue('id', response.data.conteudo[0].id, { shouldValidate: true });
+        setValue('tipoUsuarioId', response.data.conteudo[0].tipoUsuarioId, { shouldValidate: true });
         setValue('nome', response.data.conteudo[0].nome, { shouldValidate: true });
         setValue('telefone', response.data.conteudo[0].telefone, { shouldValidate: true });
         setValue('email', response.data.conteudo[0].email, { shouldValidate: true });
-        setValue('sexo', response.data.conteudo[0].sexo, { shouldValidate: true });
-        setValue('clienteSituacao', response.data.conteudo[0].clienteSituacao, { shouldValidate: true });
-        setValue('enderecoId', response.data.conteudo[0].enderecoId, { shouldValidate: true });
-        setValue('uf', response.data.conteudo[0].cidade, { shouldValidate: true });
-        setValue('cep', response.data.conteudo[0].cep, { shouldValidate: true });
-        setValue('cidade', response.data.conteudo[0].cidade, { shouldValidate: true });
-        setValue('rua', response.data.conteudo[0].rua, { shouldValidate: true });
-        setValue('quadra', response.data.conteudo[0].quadra, { shouldValidate: true });
-        setValue('lote', response.data.conteudo[0].lote, { shouldValidate: true });
-        setValue('numero', response.data.conteudo[0].numero, { shouldValidate: true });
-        setValue('bairro', response.data.conteudo[0].bairro, { shouldValidate: true });
-        setValue('complemento', response.data.conteudo[0].complemento, { shouldValidate: true });
+        setValue('senha', response.data.conteudo[0].senha, { shouldValidate: true });
         setValue('ativo', response.data.conteudo[0].ativo, { shouldValidate: true });
 
         setChecked(response.data.conteudo[0].ativo);
@@ -131,12 +101,26 @@ function Index() {
       });
   };
 
+  // Função consulta lista de Tipos de Usuários
+  const getTiposMedidas = async () => {
+    axios
+      .get('TipoUsuario')
+      .then((response) => {
+        setTipoUsuarioLista(response.data.conteudo[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    if (routeParams.clienteId !== "new") {
-      getClientes(routeParams.clienteId);
+    if (routeParams.usuarioId !== "new") {
+      getItem(routeParams.usuarioId);
     }
 
     setValue('empresaId', user.empresaId, { shouldValidate: true });
+
+    getTiposMedidas();
   }, [routeParams]);
 
   // Abre a caixa de confirmação de Exclusão
@@ -149,47 +133,32 @@ function Index() {
     setLoadingExcluir(true);
 
     axios
-      .delete(`Cliente/${getValues('clienteId')}`)
+      .delete(`Usuario/${getValues('id')}`)
       .then((response) => {
-        if (response.data.msg) {
-          dispatch(
-            showMessage({
-              message: response.data.msg,
-              autoHideDuration: 6000,
-              anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'center',
-              },
-              variant: 'success',
-            })
-          );
-        } else {
-          dispatch(
-            showMessage({
-              message: 'Registro excluido com sucesso.',
-              autoHideDuration: 6000,
-              anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'center',
-              },
-              variant: 'success',
-            })
-          );
-        }
-
+        dispatch(
+          showMessage({
+            message: response.data.msg !== '' ? response.data.msg : 'Registro excluido com sucesso.',
+            autoHideDuration: 6000,
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'center',
+            },
+            variant: 'success',
+          })
+        );
         resetForm();
         setChecked(false);
       })
       .catch((error) => {
         dispatch(
           showMessage({
-            message: 'Não foi possível concluir a solicitação.',
+            message: error.response.data.msg !== '' ? error.response.data.msg : 'Não foi possível concluir a solicitação.',
             autoHideDuration: 6000,
             anchorOrigin: {
               vertical: 'top',
               horizontal: 'center',
             },
-            variant: 'error',
+            variant: 'success',
           })
         );
         console.log(error);
@@ -202,13 +171,13 @@ function Index() {
   async function onSubmit(data) {
     setLoadingSalvar(true);
 
-    if (data.clienteId) {
+    if (data.id) {
       await axios
-        .patch('Cliente', data)
+        .patch('Usuario', data)
         .then((response) => {
           dispatch(
             showMessage({
-              message: 'Registro alterado com sucesso.',
+              message: response.data.msg !== '' ? response.data.msg : 'Registro alterado com sucesso.',
               autoHideDuration: 6000,
               anchorOrigin: {
                 vertical: 'top',
@@ -221,7 +190,7 @@ function Index() {
         .catch((error) => {
           dispatch(
             showMessage({
-              message: 'Não foi possível concluir a Solicitação.',
+              message: error.response.data.msg !== '' ? error.response.data.msg : 'Não foi possível concluir a Solicitação.',
               autoHideDuration: 6000,
               anchorOrigin: {
                 vertical: 'top',
@@ -234,11 +203,11 @@ function Index() {
         });
     } else {
       await axios
-        .post('Cliente', data)
+        .post('Usuario', data)
         .then((response) => {
           dispatch(
             showMessage({
-              message: 'Registro cadastrado com sucesso.',
+              message: response.data.msg !== '' ? response.data.msg : 'Registro cadastrado com sucesso.',
               autoHideDuration: 6000,
               anchorOrigin: {
                 vertical: 'top',
@@ -251,7 +220,7 @@ function Index() {
         .catch((error) => {
           dispatch(
             showMessage({
-              message: 'Não foi possível concluir a Solicitação.',
+              message: error.response.data.msg !== '' ? error.response.data.msg : 'Não foi possível concluir a Solicitação.',
               autoHideDuration: 6000,
               anchorOrigin: {
                 vertical: 'top',
@@ -289,6 +258,11 @@ function Index() {
             <div className="flex-auto p-24 sm:p-40">
               {/* Formulária da página */}
               <Form
+                tipoUsuarioLista={tipoUsuarioLista}
+                showSenha={showSenha}
+                setShowSenha={setShowSenha}
+                // showSenhaConfirmar={showSenhaConfirmar}
+                // setShowSenhaConfirmar={setShowSenhaConfirmar}
                 control={control}
                 errors={errors}
                 checked={checked}
